@@ -12,10 +12,11 @@
 
 # Description
 
-In some cases, where deployment with modern containers is not yet available, a
-JEE application can be updated with the manager because of the need to restart
-from the application server or if the application is so large that it cannot be
-sent with the upload load limit. For these cases the remote deployment servlet
-was created.
+In some cases where deployment with modern containers is not yet possible, a
+JEE application can be updated with the manager because a restart of the
+application server is required, command line execution is needed, or the
+application is so large that it cannot be transferred with the upload load
+limit, for example, for continuous delivery. For these cases, the Remote
+Deployment Servlet has been created.
 
 __Project is in development.__
