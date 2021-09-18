@@ -33,7 +33,6 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
-import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,12 +44,12 @@ import java.util.stream.Collectors;
 /**
  * TODO:
  *
- * RemoteDeploymentPush 0.9.0 20210912<br>
+ * RemoteDeploymentPush 0.9.0 20210918<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 0.9.0 20210912
+ * @version 0.9.0 20210918
  */
 public class RemoteDeploymentPush {
 
@@ -74,7 +73,7 @@ public class RemoteDeploymentPush {
             System.out.printf("Proxy:       %s%n", deployment.httpProxy.address());
         System.out.printf("File:        %s%n", deployment.file.getCanonicalPath());
         System.out.printf("Checksum:    %s%n", deployment.checkSum);
-        System.out.printf("Packages:    %sx max. %d bytes%n", deployment.packageCount, deployment.packageSize);
+        System.out.printf("Packages:    %sx up to %d bytes%n", deployment.packageCount, deployment.packageSize);
         System.out.printf("UUID:        %s%n", deployment.uuid);
         if (deployment.verbose)
             System.out.println("Verbose:     yes");
@@ -100,23 +99,18 @@ public class RemoteDeploymentPush {
         private static String[] detectRequestHeader(final String... arguments) {
             if (Objects.isNull(arguments))
                 return null;
-            final List<String> options = Arrays.asList(arguments).stream()
-                    .filter(Objects::nonNull)
-                    .filter(entry -> entry.contains(":"))
-                    .collect(Collectors.toList());
-            final List<String> header = new ArrayList<>();
-            for (int index = 0; index < options.size() -1; index++) {
-                String entry = options.get(index);
-                if (!("-h").equals(entry)
-                        && !("-H").equals(entry))
+            final List<String> headers = new ArrayList<>();
+            for (int index = 0; index < arguments.length -1; index++) {
+                if (Objects.isNull(arguments[index])
+                        || !("-h").equalsIgnoreCase(arguments[index]))
                     continue;
-                entry = options.get(index +1);
-                if (entry.isBlank()
-                        || entry.startsWith("-"))
+                if (Objects.isNull(arguments[index +1])
+                        || arguments[index +1].isBlank()
+                        || arguments[index +1].replaceAll(":", "") .isBlank())
                     continue;
-                header.add(entry);
+                headers.add(arguments[index +1].trim());
             }
-            return !header.isEmpty() ? header.toArray(new String[0]) : null;
+            return !headers.isEmpty() ? headers.toArray(new String[0]) : null;
         }
 
         private static Proxy detectHttpProxy(final String... arguments) {
@@ -138,7 +132,7 @@ public class RemoteDeploymentPush {
                 return 4 *1024 *1024;
             final List<String> options = Arrays.asList(arguments).stream().filter(Objects::nonNull).collect(Collectors.toList());
             final int index = options.stream().map(String::toLowerCase).collect(Collectors.toList()).indexOf("-s");
-            final int size = index >= 0 && index < options.size() -1 ? Integer.valueOf(options.get(index)) : -1;
+            final int size = index >= 0 && index < options.size() -1 ? Integer.valueOf(options.get(index +1)) : -1;
             return size > 0 ? size : 4 *1024 *1024;
         }
 
@@ -148,17 +142,16 @@ public class RemoteDeploymentPush {
 
         private static String calcFileCheckSum(final File file)
                 throws Exception {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            try (DigestInputStream digestInputStream = new DigestInputStream(
-                    new BufferedInputStream(
-                            new FileInputStream(file)), messageDigest)) {
-                while (digestInputStream.read() != -1);
-                messageDigest = digestInputStream.getMessageDigest();
+            final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            try (final InputStream inputStream = new BufferedInputStream(new FileInputStream(file))) {
+                final byte[] buffer = new byte[0xFFFF];
+                for (int size; (size = inputStream.read(buffer)) >= 0;)
+                    messageDigest.update(buffer, 0, size);
+                final StringBuilder result = new StringBuilder();
+                for (final byte digit : messageDigest.digest())
+                    result.append(String.format("%02x", digit));
+                return result.toString().toUpperCase();
             }
-            StringBuilder result = new StringBuilder();
-            for (byte digit : messageDigest.digest())
-                result.append(String.format("%02x", digit));
-            return result.toString().toUpperCase();
         }
 
         private Deployment(final String... arguments)
@@ -210,22 +203,23 @@ public class RemoteDeploymentPush {
                 long packageNumber = 0;
                 long dataNumber = this.file.length();
                 while (dataNumber > 0) {
+                    final long timing = System.currentTimeMillis();
                     final HttpURLConnection connection = this.createConnection();
-                    connection.setDoInput(true);
                     connection.setRequestMethod("PUT");
+                    connection.setDoOutput(true);
                     if (Objects.nonNull(this.requestHeader))
                         for (final String property : this.requestHeader) {
                             final String propertyPattern = "^\\s*(.*?)\\s*(?::\\s*(.*?))?\\s*$";
                             final String propertyKey = property.replaceAll(propertyPattern, "$1");
                             final String propertyValue = property.replaceAll(propertyPattern, "$2");
                             if (propertyKey.isBlank()
-                                    || !propertyValue.isBlank())
+                                    || propertyValue.isBlank())
                                 continue;
                             connection.setRequestProperty(propertyKey, propertyValue);
                         }
                     connection.setRequestProperty("Package",
                             String.format("%s/%s/%s/%s",
-                                    this.uuid, packageNumber, this.packageCount, this.checkSum));
+                                    this.uuid, ++packageNumber, this.packageCount, this.checkSum));
                     connection.connect();
 
                     try (final OutputStream outputStream = connection.getOutputStream()) {
@@ -237,15 +231,17 @@ public class RemoteDeploymentPush {
                                 break;
                             }
                             outputStream.write(digit);
-                            dataNumber--;
+                            if (--dataNumber <= 0)
+                                break;
                         }
                     }
 
                     final int responseCode = connection.getResponseCode();
                     connection.disconnect();
+
                     if (responseCode != 201)
-                        throw new AbortState(String.format("Package %d of %d failed (status %d)", packageNumber, Integer.valueOf(packageCount), responseCode));
-                    System.out.println(String.format("Package %d of %d complete (status %d)", packageNumber, Integer.valueOf(packageCount), responseCode));
+                        throw new AbortState(String.format("Package %d of %d failed (status %d, %d ms)", packageNumber, Integer.valueOf(packageCount), responseCode, System.currentTimeMillis() -timing));
+                    System.out.println(String.format("Package %d of %d complete (status %d, %d ms)", packageNumber, Integer.valueOf(packageCount), responseCode, System.currentTimeMillis() -timing));
                 }
             }
         }
@@ -284,7 +280,7 @@ public class RemoteDeploymentPush {
             System.out.printf("%s [0.0.0 00000000]%n", RemoteDeploymentPush.class.getName());
             System.out.printf("usage: %s <url> <file> [options...]%n", RemoteDeploymentPush.class.getName());
             System.out.println(" -p Proxy as URL, default port 3128");
-            System.out.println(" -h Additional HTTP request headers");
+            System.out.println(" -h Additional HTTP request headers, e.g. -h \"<header>: <value>\"");
             System.out.println(" -s Package size in bytes, default 4194304 bytes)");
             System.out.println(" -v Verbose exceptions with stacktrace");
 
