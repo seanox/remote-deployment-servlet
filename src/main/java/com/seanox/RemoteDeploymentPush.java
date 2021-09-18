@@ -116,7 +116,7 @@ public class RemoteDeploymentPush {
         private static Proxy detectHttpProxy(final String... arguments) {
             if (Objects.isNull(arguments))
                 return null;
-            final List<String> options = Arrays.asList(arguments).stream().filter(Objects::nonNull).collect(Collectors.toList());
+            final List<String> options = Arrays.stream(arguments).filter(Objects::nonNull).collect(Collectors.toList());
             final int index = options.stream().map(String::toLowerCase).collect(Collectors.toList()).indexOf("-p");
             if (index < 0
                     || index >= options.size() -1)
@@ -130,7 +130,7 @@ public class RemoteDeploymentPush {
         private static int detectPackageSize(final String... arguments) {
             if (Objects.isNull(arguments))
                 return 4 *1024 *1024;
-            final List<String> options = Arrays.asList(arguments).stream().filter(Objects::nonNull).collect(Collectors.toList());
+            final List<String> options = Arrays.stream(arguments).filter(Objects::nonNull).collect(Collectors.toList());
             final int index = options.stream().map(String::toLowerCase).collect(Collectors.toList()).indexOf("-s");
             final int size = index >= 0 && index < options.size() -1 ? Integer.valueOf(options.get(index +1)) : -1;
             return size > 0 ? size : 4 *1024 *1024;
@@ -159,7 +159,7 @@ public class RemoteDeploymentPush {
 
             if (Objects.isNull(arguments))
                 throw new WrongArgumentState();
-            final List<String> options = Arrays.asList(arguments).stream().filter(Objects::nonNull).collect(Collectors.toList());
+            final List<String> options = Arrays.stream(arguments).filter(Objects::nonNull).collect(Collectors.toList());
             if (options.size() < 2
                     || options.get(0).isBlank()
                     || options.get(1).isBlank())
@@ -240,8 +240,8 @@ public class RemoteDeploymentPush {
                     connection.disconnect();
 
                     if (responseCode != 201)
-                        throw new AbortState(String.format("Package %d of %d failed (status %d, %d ms)", packageNumber, Integer.valueOf(packageCount), responseCode, System.currentTimeMillis() -timing));
-                    System.out.println(String.format("Package %d of %d complete (status %d, %d ms)", packageNumber, Integer.valueOf(packageCount), responseCode, System.currentTimeMillis() -timing));
+                        throw new AbortState(String.format("Package %d of %d failed (status %d, %d ms)", packageNumber, packageCount, responseCode, System.currentTimeMillis() -timing));
+                    System.out.printf("Package %d of %d complete (status %d, %d ms)%n", packageNumber, packageCount, responseCode, System.currentTimeMillis() -timing);
                 }
             }
         }
