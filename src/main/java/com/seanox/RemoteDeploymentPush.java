@@ -46,7 +46,7 @@ import java.util.stream.Stream;
  * RemoteDeploymentPush sends files in chunks to RemoteDeploymentFilter for
  * deployment. Packetized sending of the chunks is based on the Package header
  * in the request.<br>
- * <code>Package: UUID/Number/Count/CheckSum<br>
+ * <code>Package: UUID/Secret/Number/Count/CheckSum<br>
  * <br>
  * <h3>Usage</h3>
  * RemoteDeploymentPush <url> <file> [options...]<br>
@@ -65,6 +65,8 @@ import java.util.stream.Stream;
  * @version 0.9.0 20210919
  */
 public class RemoteDeploymentPush {
+
+    private static final String HTTP_HEADER_PACKAGE = "Package";
 
     private static boolean verbose;
 
@@ -114,9 +116,10 @@ public class RemoteDeploymentPush {
     private static class Deployment {
 
         private final URL destination;
+        private final String secret;
+        private final File file;
         private final String[] requestHeader;
         private final Proxy httpProxy;
-        private final File file;
         private final String checkSum;
         private final int packageCount;
         private final int packageSize;
@@ -133,7 +136,8 @@ public class RemoteDeploymentPush {
                     continue;
                 if (Objects.isNull(arguments[index +1])
                         || arguments[index +1].isBlank()
-                        || arguments[index +1].replaceAll(":", "") .isBlank())
+                        || arguments[index +1].replaceAll(":", "") .isBlank()
+                        || arguments[index +1].equalsIgnoreCase(HTTP_HEADER_PACKAGE))
                     continue;
                 headers.add(arguments[index +1].trim());
             }
@@ -187,9 +191,10 @@ public class RemoteDeploymentPush {
             if (Objects.isNull(arguments))
                 throw new WrongArgumentState();
             final List<String> options = Arrays.stream(arguments).filter(Objects::nonNull).collect(Collectors.toList());
-            if (options.size() < 2
+            if (options.size() < 3
                     || options.get(0).isBlank()
-                    || options.get(1).isBlank())
+                    || options.get(1).isBlank()
+                    || options.get(2).isBlank())
                 throw new WrongArgumentState();
 
             try {this.destination = new URL(options.get(0));
@@ -197,7 +202,13 @@ public class RemoteDeploymentPush {
                 throw new WrongArgumentState("Invalid destination URL", exception);
             }
 
-            this.file = new File(options.get(1));
+            this.secret = options.get(1);
+            if (this.secret.isBlank())
+                throw new WrongArgumentState("Invalid secret");
+            if (!this.secret.matches("(?i)^([0-9a-z](?:[\\w-]*[0-9a-z])*)$"))
+                throw new WrongArgumentState("Invalid secret: " + secret);
+
+            this.file = new File(options.get(2));
             if (!this.file.exists()
                     || !this.file.isFile())
                 throw new WrongArgumentState("Invalid path of data file: " + this.file);
@@ -244,9 +255,9 @@ public class RemoteDeploymentPush {
                                 continue;
                             connection.setRequestProperty(propertyKey, propertyValue);
                         }
-                    connection.setRequestProperty("Package",
-                            String.format("%s/%s/%s/%s",
-                                    this.uuid, ++packageNumber, this.packageCount, this.checkSum));
+                    connection.setRequestProperty(HTTP_HEADER_PACKAGE,
+                            String.format("%s/%s/%s/%s/%s",
+                                    this.uuid, this.secret, ++packageNumber, this.packageCount, this.checkSum));
                     connection.connect();
 
                     try (final OutputStream outputStream = connection.getOutputStream()) {
@@ -306,7 +317,7 @@ public class RemoteDeploymentPush {
             else if (Objects.nonNull(cause))
                 System.out.printf("%n%s: %s%n%n", cause.getClass().getSimpleName(), cause.getMessage());
 
-            System.out.printf("usage: %s <url> <file> [options...]%n", RemoteDeploymentPush.class.getName());
+            System.out.printf("usage: %s <url> <secret> <file> [options...]%n", RemoteDeploymentPush.class.getName());
             System.out.println(" -p Proxy as URL, default port 3128");
             System.out.println(" -h Additional HTTP request headers as <header>:<value>");
             System.out.println(" -s Chunk size in bytes, default 4194304 bytes)");
