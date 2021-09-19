@@ -43,8 +43,20 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * TODO:
- *
+ * RemoteDeploymentPush sends files in chunks to RemoteDeploymentFilter for
+ * deployment. Packetized sending of the chunks is based on the Package header
+ * in the request.<br>
+ * <code>Package: UUID/Number/Count/CheckSum<br>
+ * <br>
+ * <h3>Usage</h3>
+ * RemoteDeploymentPush <url> <file> [options...]<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;-p Proxy as URL, default port 3128<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;-h Additional HTTP request headers as <header>:<value><br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;-s Chunk size in bytes, default 4194304 bytes)<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;-v Verbose exceptions with stacktrace<br>
+ * <br>
+ * For the final version 1.0.0, parallel sending is still missing.<br>
+ * <br>
  * RemoteDeploymentPush 0.9.0 20210919<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
