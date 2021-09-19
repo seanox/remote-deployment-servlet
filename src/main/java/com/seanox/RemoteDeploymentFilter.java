@@ -148,7 +148,6 @@ public class RemoteDeploymentFilter extends HttpFilter {
     private long expiration;
 
     private static final String HTTP_HEADER_PACKAGE = "Package";
-    private static final String HTTP_HEADER_SECRET = "Secret";
 
     @Override
     public void init(final FilterConfig config)
@@ -181,6 +180,7 @@ public class RemoteDeploymentFilter extends HttpFilter {
 
     private static class PackageMeta {
         private String uuid;
+        private String secret;
         private int number;
         private int count;
         private String checkSum;
@@ -190,15 +190,16 @@ public class RemoteDeploymentFilter extends HttpFilter {
         if (Objects.isNull(request))
             return null;
         final String packageMetaHeader = request.getHeader(HTTP_HEADER_PACKAGE);
-        final String packageMetaHeaderPattern = "^(?i)([\\w-]+)/(\\d+)/(\\d+)/((?:[0-9A-F]{2})+)$";
+        final String packageMetaHeaderPattern = "^(?i)([0-9a-z](?:[\\w-]*[0-9a-z])*)/([0-9a-z](?:[\\w-]*[0-9a-z])*)/(\\d+)/(\\d+)/((?:[0-9A-F]{2})+)$";
         if (Objects.isNull(packageMetaHeader)
                 || !packageMetaHeader.matches(packageMetaHeaderPattern))
             return null;
         final PackageMeta packageMeta = new PackageMeta();
         packageMeta.uuid = packageMetaHeader.replaceAll(packageMetaHeaderPattern, "$1");
-        packageMeta.number = Integer.valueOf(packageMetaHeader.replaceAll(packageMetaHeaderPattern, "$2"));
-        packageMeta.count = Integer.valueOf(packageMetaHeader.replaceAll(packageMetaHeaderPattern, "$3"));
-        packageMeta.checkSum = packageMetaHeader.replaceAll(packageMetaHeaderPattern, "$4");
+        packageMeta.secret = packageMetaHeader.replaceAll(packageMetaHeaderPattern, "$2");
+        packageMeta.number = Integer.valueOf(packageMetaHeader.replaceAll(packageMetaHeaderPattern, "$3"));
+        packageMeta.count = Integer.valueOf(packageMetaHeader.replaceAll(packageMetaHeaderPattern, "$4"));
+        packageMeta.checkSum = packageMetaHeader.replaceAll(packageMetaHeaderPattern, "$5");
         return packageMeta;
     }
 
@@ -224,18 +225,14 @@ public class RemoteDeploymentFilter extends HttpFilter {
         // otherwise the filter behaves as if it does not exist. This is the
         // security concept. The filter reacts only after authorization.
         if (Objects.isNull(request.getMethod())
-                || !("PUT").equalsIgnoreCase(request.getMethod())
-                || !this.secret.equals(request.getHeader(HTTP_HEADER_SECRET))) {
+                || !("PUT").equalsIgnoreCase(request.getMethod())) {
             super.doFilter(request, response, chain);
             return;
         }
-
-        // Without Packet header the request is responded with status 400 (Bad
-        // Request) because the filter does not know what to do.
         final PackageMeta packageMeta = RemoteDeploymentFilter.detectPackageMeta(request);
-        if (Objects.isNull(packageMeta)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.flushBuffer();
+        if (Objects.isNull(packageMeta)
+                || !this.secret.equals(packageMeta.secret)) {
+            super.doFilter(request, response, chain);
             return;
         }
 
