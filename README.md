@@ -105,7 +105,7 @@ Java 11 or higher
 
 
 # Downloads
-TODO:
+0.9.0 Coming soon
 
 
 # Manuals
@@ -113,7 +113,10 @@ TODO:
 
 
 # Changes (Change Log)
-TODO:
+## 0.9.0 2021xxxx (summary of the next version)
+NT: Release coming soon
+
+[Read more](https://raw.githubusercontent.com/seanox/remote-deployment-servlet/master/CHANGES)
 
 
 # Contact
