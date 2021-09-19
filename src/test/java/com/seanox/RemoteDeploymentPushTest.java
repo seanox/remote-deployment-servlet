@@ -58,8 +58,8 @@ public class RemoteDeploymentPushTest {
         final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputBuffer));
         RemoteDeploymentPush.main("http://127.0.0.1:8080/0123456789ABCDEF",
+                "A1B2C3D4E5F6G7H8",
                 "./src/test/resources/example.png",
-                "-h", "Secret: A1B2C3D4E5F6G7H8",
                 "-v");
         OUTPUT.println(outputBuffer);
         final String outputText = outputBuffer.toString();
@@ -91,10 +91,10 @@ public class RemoteDeploymentPushTest {
         final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputBuffer));
         Throwable throwable = Assertions.assertThrows(Exception.class, () ->
-            RemoteDeploymentPush.main("http://127.0.0.1:8080/0123456789ABCDEF",
-                    "./src/test/resources/example.png",
-                    "-h", "Secret: A1B2C3D4E5F6G7H8_",
-                    "-v")
+                RemoteDeploymentPush.main("http://127.0.0.1:8080/0123456789ABCDEF",
+                        "A1B2C3D4E5F6G7H8x",
+                        "./src/test/resources/example.png",
+                        "-v")
         );
         OUTPUT.println(outputBuffer);
         Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
@@ -110,8 +110,8 @@ public class RemoteDeploymentPushTest {
         System.setOut(new PrintStream(outputBuffer));
         Throwable throwable = Assertions.assertThrows(Exception.class, () ->
             RemoteDeploymentPush.main("http://127.0.0.1:8080/0123456789ABCDEF",
+                    "A1B2C3D4E5F6G7H8",
                     "./src/test/resources/example.png_",
-                    "-h", "Secret: A1B2C3D4E5F6G7H8",
                     "-v")
         );
         OUTPUT.println(outputBuffer);
@@ -128,8 +128,8 @@ public class RemoteDeploymentPushTest {
         System.setOut(new PrintStream(outputBuffer));
         Throwable throwable = Assertions.assertThrows(Exception.class, () ->
             RemoteDeploymentPush.main("http://127.0.0.1:8080/0123456789ABCDEF_",
+                    "A1B2C3D4E5F6G7H8",
                     "./src/test/resources/example.png",
-                    "-h", "Secret: A1B2C3D4E5F6G7H8",
                     "-v")
         );
         OUTPUT.println(outputBuffer);
@@ -168,6 +168,8 @@ public class RemoteDeploymentPushTest {
             Assertions.fail("Missing output: " + failedPattern);
         if (outputText.contains("Invalid destination URL"))
             Assertions.fail("Output contains unexpected: Invalid destination URL");
+        if (outputText.contains("Invalid secret"))
+            Assertions.fail("Output contains unexpected: Invalid secret");
         if (outputText.contains("Invalid path of data file"))
             Assertions.fail("Output contains unexpected: Invalid path of data file");
     }
@@ -177,7 +179,7 @@ public class RemoteDeploymentPushTest {
         final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputBuffer));
         Throwable throwable = Assertions.assertThrows(Exception.class, () ->
-            RemoteDeploymentPush.main("xxx", "xxx")
+            RemoteDeploymentPush.main("xxx", "xxx", "xxx")
         );
         OUTPUT.println(outputBuffer);
         Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
@@ -187,6 +189,8 @@ public class RemoteDeploymentPushTest {
             Assertions.fail("Missing output: " + failedPattern);
         if (!outputText.contains("Invalid destination URL"))
             Assertions.fail("Missing: Invalid destination URL");
+        if (outputText.contains("Invalid secret"))
+            Assertions.fail("Output contains unexpected: Invalid secret");
         if (outputText.contains("Invalid path of data file"))
             Assertions.fail("Output contains unexpected: Invalid path of data file");
     }
@@ -196,7 +200,7 @@ public class RemoteDeploymentPushTest {
         final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputBuffer));
         Throwable throwable = Assertions.assertThrows(Exception.class, () ->
-            RemoteDeploymentPush.main("http://127.0.0.1/xxx", "xxx")
+                RemoteDeploymentPush.main("http://127.0.0.1/xxx", "_xxx", "xxx")
         );
         OUTPUT.println(outputBuffer);
         Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
@@ -206,6 +210,27 @@ public class RemoteDeploymentPushTest {
             Assertions.fail("Missing output: " + failedPattern);
         if (outputText.contains("Invalid destination URL"))
             Assertions.fail("Output contains unexpected: Invalid destination URL");
+        if (!outputText.contains("Invalid secret"))
+            Assertions.fail("Missing: Invalid secret");
+    }
+
+    @Test
+    void testPush_9() {
+        final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputBuffer));
+        Throwable throwable = Assertions.assertThrows(Exception.class, () ->
+            RemoteDeploymentPush.main("http://127.0.0.1/xxx", "xxx", "xxx")
+        );
+        OUTPUT.println(outputBuffer);
+        Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
+        final String outputText = outputBuffer.toString();
+        final String failedPattern = "usage: com.seanox.RemoteDeploymentPush";
+        if (!outputText.contains(failedPattern))
+            Assertions.fail("Missing output: " + failedPattern);
+        if (outputText.contains("Invalid destination URL"))
+            Assertions.fail("Output contains unexpected: Invalid destination URL");
+        if (outputText.contains("Invalid secret"))
+            Assertions.fail("Output contains unexpected: Invalid secret");
         if (!outputText.contains("Invalid path of data file"))
             Assertions.fail("Missing: Invalid path of data file");
     }
