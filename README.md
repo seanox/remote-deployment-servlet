@@ -59,6 +59,7 @@ request can be sent with various tools.
     <filter-name>RemoteDeploymentServlet</filter-name>
     <url-pattern>/97C698B4EF93088CAF0A721A792D3AB6</url-pattern>
   </filter-mapping>
+  ...
 </web-app>
 ```
 Important: Automatic deployment must be disabled for the servlet container. For
