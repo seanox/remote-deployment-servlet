@@ -51,6 +51,10 @@ import java.util.Objects;
  *     &lt;filter-name&gt;RemoteDeploymentFilter&lt;/filter-name&gt;
  *     &lt;filter-class&gt;com.seanox.RemoteDeploymentFilter&lt;/filter-class&gt;
  *     &lt;init-param&gt;
+ *       &lt;param-name&gt;secret&lt;/param-name&gt;
+ *       &lt;param-value&gt;B43AA6F00D034661722495C388527735&lt;/param-value&gt;
+ *     &lt;/init-param&gt;
+ *     &lt;init-param&gt;
  *       &lt;param-name&gt;destination&lt;/param-name&gt;
  *       &lt;param-value&gt;D:\Tomcat\webapps\example.war&lt;/param-value&gt;
  *     &lt;/init-param&gt;
@@ -63,11 +67,14 @@ import java.util.Objects;
  *         &amp;amp;amp; net start TomcatService
  *       &lt;/param-value&gt;
  *     &lt;/init-param&gt;
- *     &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
+ *     &lt;init-param&gt;
+ *       &lt;param-name&gt;expiration&lt;/param-name&gt;
+ *       &lt;param-value&gt;300000&lt;/param-value&gt;
+ *     &lt;/init-param&gt;
  *   &lt;/filter&gt;
  *   &lt;filter-mapping&gt;
  *     &lt;filter-name&gt;RemoteDeploymentFilter&lt;/filter-name&gt;
- *     &lt;url-pattern&gt;/6F6E6C7920616E206578616D706C65&lt;/url-pattern&gt;
+ *     &lt;url-pattern&gt;/97C698B4EF93088CAF0A721A792D3AB6&lt;/url-pattern&gt;
  *   &lt;/filter-mapping&gt;
  * </pre>
  *
