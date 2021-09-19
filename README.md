@@ -27,6 +27,8 @@ and in fragments if necessary, and to execute optional command line
 instructions. Sending is a normal HTTP request with one additional header. The
 request can be sent with various tools.
 
+Example of configuration via web.xml
+
 ```xml
 <web-app ...>
   ...
