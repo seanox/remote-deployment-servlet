@@ -40,16 +40,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * TODO:
  *
- * RemoteDeploymentPush 0.9.0 20210918<br>
+ * RemoteDeploymentPush 0.9.0 20210919<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 0.9.0 20210918
+ * @version 0.9.0 20210919
  */
 public class RemoteDeploymentPush {
 
@@ -57,6 +58,20 @@ public class RemoteDeploymentPush {
 
     public static void main(String... arguments)
             throws Exception {
+
+        // If RemoteDeploymentPush is run standalone, System.exit(1) is called
+        // in case of an error, assuming that the call can be checked for
+        // errors on the command line, which is possible with the error code.
+        final String stackTraceElementFilter = RemoteDeploymentPush.class.getPackageName() + ".";
+        final Stream<StackTraceElement> stackTraceElementStream = Arrays.stream(new Throwable().getStackTrace());
+        if (stackTraceElementStream
+                .filter(stackTraceElement -> !stackTraceElement.getClassName().startsWith(stackTraceElementFilter))
+                .count() <= 0)
+            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                public void uncaughtException(final Thread thread, final Throwable throwable) {
+                    System.exit(1);
+                }
+            });
 
         final Deployment deployment;
         try {deployment = Deployment.create(arguments);
@@ -249,7 +264,7 @@ public class RemoteDeploymentPush {
 
     private static abstract class AbstractState extends RuntimeException {
 
-        private static Throwable detectOriginalCase(Throwable throwable) {
+        private static Throwable detectOriginalCause(Throwable throwable) {
             while (Objects.nonNull(throwable.getCause())
                     && !throwable.equals(throwable.getCause()))
                 throwable = throwable.getCause();
@@ -269,22 +284,21 @@ public class RemoteDeploymentPush {
 
         WrongArgumentState(String message, Exception cause) {
 
+            System.out.printf("%s [0.0.0 00000000]%n", RemoteDeploymentPush.class.getName());
+
             if (Objects.nonNull(message)
                     && Objects.nonNull(cause))
-                System.out.printf("%s: %s%n%n", message, cause.getMessage());
+                System.out.printf("%n%s: %s%n%n", message, cause.getMessage());
             else if (Objects.nonNull(message))
-                System.out.printf("%s%n%n", message);
+                System.out.printf("%n%s%n%n", message);
             else if (Objects.nonNull(cause))
-                System.out.printf("%s: %s%n%n", cause.getClass().getSimpleName(), cause.getMessage());
+                System.out.printf("%n%s: %s%n%n", cause.getClass().getSimpleName(), cause.getMessage());
 
-            System.out.printf("%s [0.0.0 00000000]%n", RemoteDeploymentPush.class.getName());
             System.out.printf("usage: %s <url> <file> [options...]%n", RemoteDeploymentPush.class.getName());
             System.out.println(" -p Proxy as URL, default port 3128");
-            System.out.println(" -h Additional HTTP request headers, e.g. -h \"<header>: <value>\"");
-            System.out.println(" -s Package size in bytes, default 4194304 bytes)");
+            System.out.println(" -h Additional HTTP request headers as <header>:<value>");
+            System.out.println(" -s Chunk size in bytes, default 4194304 bytes)");
             System.out.println(" -v Verbose exceptions with stacktrace");
-
-            System.exit(1);
         }
     }
 
@@ -292,17 +306,18 @@ public class RemoteDeploymentPush {
 
         AbortState(String message) {
             System.out.println(message);
-            System.exit(1);
         }
 
         AbortState(Exception cause) {
+            final Throwable originalCause = AbstractState.detectOriginalCause(cause);
+            if (cause instanceof AbstractState)
+                return;
             if (!RemoteDeploymentPush.verbose) {
                 System.out.println(cause.getClass().getSimpleName() + ": " + cause.getMessage());
-                if (!AbstractState.detectOriginalCase(cause).equals(cause))
-                    System.out.println(AbstractState.detectOriginalCase(cause).getClass().getSimpleName()
-                            + ": " + AbstractState.detectOriginalCase(cause).getMessage());
+                if (!originalCause.equals(cause))
+                    System.out.println(AbstractState.detectOriginalCause(cause).getClass().getSimpleName()
+                            + ": " + AbstractState.detectOriginalCause(cause).getMessage());
             } else cause.printStackTrace(System.out);
-            System.exit(1);
         }
     }
 }
