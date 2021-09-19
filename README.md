@@ -27,6 +27,43 @@ and in fragments if necessary, and to execute optional command line
 instructions. Sending is a normal HTTP request with one additional header. The
 request can be sent with various tools.
 
+```xml
+<web-app ...>
+  ...
+  <filter>
+    <servlet-name>RemoteDeploymentFilter</servlet-name>
+    <filter-class>com.seanox.RemoteDeploymentFilter</filter-class>
+    <init-param>
+      <param-name>secret</param-name>
+      <param-value>B43AA6F00D034661722495C388527735</param-value>
+    </init-param>
+    <init-param>
+      <param-name>destination</param-name>
+      <param-value>D:\Tomcat\webapps\application.war</param-value>
+    </init-param>
+    <init-param>
+      <param-name>command</param-name>
+      <param-value>
+        cmd /C ping -n 60 127.0.0.1 &amp;gt; NUL
+        &amp;amp; net stop TomcatService
+        &amp;amp; ping -n 60 127.0.0.1 &amp;gt; NUL
+        &amp;amp; net start TomcatService      
+      </param-value>
+    </init-param>    
+    <init-param>
+      <param-name>expiration</param-name>
+      <param-value>300000</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>RemoteDeploymentServlet</filter-name>
+    <url-pattern>/97C698B4EF93088CAF0A721A792D3AB6</url-pattern>
+  </filter-mapping>
+</web-app>
+```
+Important: Automatic deployment must be disabled for the servlet container. For
+example, for Tomcat, this can be configured in `server.xml` via `autoDeploy`.
+
 __RemoteDeploymentPush__ is a command line tool and sends files, if necessary
 in chunks, using the Package header in the HTTP request and was developed
 specifically for RemoteDeploymentFilter.
