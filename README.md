@@ -67,9 +67,9 @@ Example of configuration via web.xml
 Important: Automatic deployment must be disabled for the servlet container. For
 example, for Tomcat, this can be configured in `server.xml` via `autoDeploy`.
 
-__RemoteDeploymentPush__ is a command line tool and sends files, if necessary
-in chunks, using the Package header in the HTTP request and was developed
-specifically for RemoteDeploymentFilter.
+__RemoteDeploymentPush__ is a command line tool without further dependencies
+and sends files, if necessary in chunks, using the Package header in the HTTP
+request and was developed specifically for RemoteDeploymentFilter.
 
 ```
 usage: java -jar seanox-remote-deployment-0.9.0.jar <url> <file>
