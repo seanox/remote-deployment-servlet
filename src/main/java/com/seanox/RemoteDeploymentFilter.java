@@ -338,4 +338,14 @@ public class RemoteDeploymentFilter extends HttpFilter {
             }
         }
     }
+
+    @Override
+    public void destroy() {
+        final File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
+        Arrays.stream(tempDirectory.listFiles())
+                .filter(file -> file.isFile()
+                        && file.getName().startsWith(UUID + "---")
+                        && file.lastModified() <= expiration)
+                .forEach(file -> file.delete());
+    }
 }
