@@ -344,8 +344,7 @@ public class RemoteDeploymentFilter extends HttpFilter {
         final File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
         Arrays.stream(tempDirectory.listFiles())
                 .filter(file -> file.isFile()
-                        && file.getName().startsWith(UUID + "---")
-                        && file.lastModified() <= expiration)
+                        && file.getName().startsWith(UUID + "---"))
                 .forEach(file -> file.delete());
     }
 }
