@@ -94,7 +94,8 @@ import java.util.Objects;
  * Requests to the RemoteDeploymentFilter generate temporary files. Because the
  * data is transferred in chunks, the files must be retained. The expiration
  * time in milliseconds determines how long the expiration time is in case of
- * an error. After the expiration time, the temporary files are cleaned up.
+ * an error. After the expiration time, the temporary files are cleaned up. A
+ * value 0 and smaller disables the clean up.
  *
  * <h3>Parameter: url-pattern</h3>
  * Filters and the update are called via a virtual path that is not publicly
@@ -126,12 +127,12 @@ import java.util.Objects;
  *   <li>Add the user and the permissions (mostly full access)</li>
  * </ul>
  *
- * RemoteDeploymentFilter 1.0.0 20210918<br>
+ * RemoteDeploymentFilter 1.0.0 20210920<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210918
+ * @version 1.0.0 20210920
  */
 public class RemoteDeploymentFilter extends HttpFilter {
 
@@ -327,10 +328,14 @@ public class RemoteDeploymentFilter extends HttpFilter {
 
             // All expired temporary files matching the UUID of this filter
             // instance will be cleaned.
-            final long expiration = System.currentTimeMillis() -this.expiration;
-            Arrays.stream(tempDirectory.listFiles())
-                    .filter(file -> file.isFile() && file.getName().startsWith(UUID + "---") && file.lastModified() <= expiration)
-                    .forEach(file -> file.delete());
+            if (this.expiration > 0) {
+                final long expiration = System.currentTimeMillis() -this.expiration;
+                Arrays.stream(tempDirectory.listFiles())
+                        .filter(file -> file.isFile()
+                                && file.getName().startsWith(UUID + "---")
+                                && file.lastModified() <= expiration)
+                        .forEach(file -> file.delete());
+            }
         }
     }
 }
