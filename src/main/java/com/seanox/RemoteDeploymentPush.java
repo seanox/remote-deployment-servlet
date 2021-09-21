@@ -57,12 +57,12 @@ import java.util.stream.Stream;
  * <br>
  * For the final version 1.0.0, parallel sending is still missing.<br>
  * <br>
- * RemoteDeploymentPush 0.9.0 20210919<br>
+ * RemoteDeploymentPush 0.9.0 20210921<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 0.9.0 20210919
+ * @version 0.9.0 20210921
  */
 public class RemoteDeploymentPush {
 
@@ -95,7 +95,8 @@ public class RemoteDeploymentPush {
 
         RemoteDeploymentPush.verbose = deployment.verbose;
 
-        System.out.printf("%s [0.0.0 00000000]%n", RemoteDeploymentPush.class.getName());
+        System.out.printf("Seanox %s [0.0.0 00000000]%n", RemoteDeploymentPush.class.getSimpleName());
+        System.out.printf("Copyright (C) 0000 Seanox Software Solutions%n");
         System.out.println();
         System.out.printf("Destination: %s%n", deployment.destination);
         if (Objects.nonNull(deployment.httpProxy))
