@@ -74,10 +74,10 @@ request and was developed specifically for RemoteDeploymentFilter.
 
 ```
 usage: java -jar seanox-remote-deployment-0.9.0.jar <url> <secret> <file> 
-  -p Proxy as URL, default port 3128");
-  -h Additional HTTP request headers as <header>:<value>");
-  -s Chunk size in bytes, default 4194304 bytes)");
-  -v Verbose exceptions with stacktrace");
+  -p Proxy as URL, default port 3128
+  -h Additional HTTP request headers as <header>:<value>
+  -s Chunk size in bytes, default 4194304 bytes)
+  -v Verbose exceptions with stacktrace
 ```
 
 
