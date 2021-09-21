@@ -1,6 +1,7 @@
 <p>
-  <a href="https://github.com/seanox/remote-deployment-servlet/pulls">
-    <img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge">
+  <a href="https://github.com/seanox/remote-deployment-servlet/pulls"
+      title="Development is waiting for new issues / requests / ideas">
+    <img src="https://img.shields.io/badge/development-passive-blue?style=for-the-badge">
   </a>  
   <a href="https://github.com/seanox/remote-deployment-servlet/issues">
     <img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge">
@@ -120,8 +121,8 @@ TODO:
 
 
 # Changes (Change Log)
-## 0.9.0 2021xxxx (summary of the next version)  
-NT: Release coming soon  
+## 0.9.0 20210921 (summary of the current version)  
+NT: Release is available  
 
 [Read more](https://raw.githubusercontent.com/seanox/remote-deployment-servlet/master/CHANGES)
 

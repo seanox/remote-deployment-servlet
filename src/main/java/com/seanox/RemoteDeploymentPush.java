@@ -95,8 +95,8 @@ public class RemoteDeploymentPush {
 
         RemoteDeploymentPush.verbose = deployment.verbose;
 
-        System.out.printf("Seanox %s [Version 0.0.0 00000000]%n", RemoteDeploymentPush.class.getSimpleName());
-        System.out.printf("Copyright (C) 0000 Seanox Software Solutions%n");
+        System.out.printf("Seanox %s [Version 0.9.0 20210921]%n", RemoteDeploymentPush.class.getSimpleName());
+        System.out.printf("Copyright (C) 2021 Seanox Software Solutions%n");
         System.out.println();
         System.out.printf("Destination: %s%n", deployment.destination);
         if (Objects.nonNull(deployment.httpProxy))
