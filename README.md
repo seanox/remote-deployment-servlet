@@ -105,7 +105,14 @@ Java 11 or higher
 
 
 # Downloads
-0.9.0 Coming soon
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment
+```xml
+<dependency>
+    <groupId>com.seanox</groupId>
+    <artifactId>seanox-remote-deployment</artifactId>
+    <version>0.9.0</version>
+</dependency>
+```
 
 
 # Manuals
@@ -113,8 +120,8 @@ TODO:
 
 
 # Changes (Change Log)
-## 0.9.0 2021xxxx (summary of the next version)
-NT: Release coming soon
+## 0.9.0 2021xxxx (summary of the next version)  
+NT: Release coming soon  
 
 [Read more](https://raw.githubusercontent.com/seanox/remote-deployment-servlet/master/CHANGES)
 
