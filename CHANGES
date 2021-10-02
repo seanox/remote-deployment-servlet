@@ -1,2 +1,6 @@
+0.9.5 2021xxxx
+  CR: Servlet: Added as an alternative to the filter
+      When the deployment should run outside the context of the application.
+
 0.9.0 20210921
   NT: Release is available

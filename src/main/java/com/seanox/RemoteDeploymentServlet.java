@@ -21,18 +21,18 @@
  */
 package com.seanox;
 
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpFilter;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * The RemoteDeploymentFilter supports HTTP-based updating of Web applications.
- * The benefit is the data transmission in chunks and the optional use of the
- * command line, e.g. to stop and start of the Servlet-Container.
+ * The RemoteDeploymentServlet supports HTTP-based updating of Web
+ * applications. The benefit is the data transmission in chunks and the
+ * optional use of the command line, e.g. to stop and start of the
+ * Servlet-Container.
  *
  * <h3>Why Servlet and Filter?</h3>
  * The filter has the advantage that it can run directly in the context of a
@@ -42,11 +42,11 @@ import java.io.IOException;
  * filter is used is not possible.
  *
  * <h3>Configuration (web.xml)</h3>
- * The RemoteDeploymentFilter is configured exclusively via the web.xml.
+ * The RemoteDeploymentServlet is configured exclusively via the web.xml.
  * <pre>
- *   &lt;filter&gt;
- *     &lt;filter-name&gt;RemoteDeploymentFilter&lt;/filter-name&gt;
- *     &lt;filter-class&gt;com.seanox.RemoteDeploymentFilter&lt;/filter-class&gt;
+ *   &lt;servlet&gt;
+ *     &lt;servlet-name&gt;RemoteDeploymentServlet&lt;/servlet-name&gt;
+ *     &lt;servlet-class&gt;com.seanox.RemoteDeploymentServlet&lt;/servlet-class&gt;
  *     &lt;init-param&gt;
  *       &lt;param-name&gt;secret&lt;/param-name&gt;
  *       &lt;param-value&gt;B43AA6F00D034661722495C388527735&lt;/param-value&gt;
@@ -68,15 +68,15 @@ import java.io.IOException;
  *       &lt;param-name&gt;expiration&lt;/param-name&gt;
  *       &lt;param-value&gt;300000&lt;/param-value&gt;
  *     &lt;/init-param&gt;
- *   &lt;/filter&gt;
- *   &lt;filter-mapping&gt;
- *     &lt;filter-name&gt;RemoteDeploymentFilter&lt;/filter-name&gt;
+ *   &lt;/servlet&gt;
+ *   &lt;servlet-mapping&gt;
+ *     &lt;servlet-name&gt;RemoteDeploymentServlet&lt;/servlet-name&gt;
  *     &lt;url-pattern&gt;/97C698B4EF93088CAF0A721A792D3AB6&lt;/url-pattern&gt;
- *   &lt;/filter-mapping&gt;
+ *   &lt;/servlet-mapping&gt;
  * </pre>
  *
  * <h3>Parameter: destination</h3>
- * Filters and the update are called via a virtual path that is not publicly
+ * Servlets and the update are called via a virtual path that is not publicly
  * known. The path is a cryptic alias that refers to a physical path, which is
  * destination.
  *
@@ -88,20 +88,20 @@ import java.io.IOException;
  * HTTP request header.
  *
  * <h3>Parameter: expiration</h3>
- * Requests to the RemoteDeploymentFilter generate temporary files. Because the
- * data is transferred in chunks, the files must be retained. The expiration
- * time in milliseconds determines how long the expiration time is in case of
- * an error. After the expiration time, the temporary files are cleaned up. A
- * value 0 and smaller disables the clean up.
+ * Requests to the RemoteDeploymentServlet generate temporary files. Because
+ * the data is transferred in chunks, the files must be retained. The
+ * expiration time in milliseconds determines how long the expiration time is
+ * in case of an error. After the expiration time, the temporary files are
+ * cleaned up. A value 0 and smaller disables the clean up.
  *
  * <h3>Parameter: url-pattern</h3>
- * Filters and the update are called via a virtual path that is not publicly
+ * Servlets and the update are called via a virtual path that is not publicly
  * known. The path is a cryptic alias that refers to a concrete path in the
  * file system in the further configuration.
  *
  * <h3>Security Concept</h3>
  * Only PUT requests and matching Secret headers are accepted, otherwise the
- * filter behaves as if it does not exist. The filter reacts only after
+ * servlet behaves as if it does not exist. The servlet reacts only after
  * sufficient authorization.
  *
  * <h3>Configuration Tomcat (server.xml)</b></dir>
@@ -124,34 +124,35 @@ import java.io.IOException;
  *   <li>Add the user and the permissions (mostly full access)</li>
  * </ul>
  *
- * RemoteDeploymentFilter 1.1.0 20211002<br>
+ * RemoteDeploymentServlet 1.1.0 20211002<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
  * @version 1.1.0 20211002
  */
-public class RemoteDeploymentFilter extends HttpFilter {
+public class RemoteDeploymentServlet extends HttpServlet {
 
     private RemoteDeploymentImpl remoteDeployment;
 
     @Override
-    public void init(final FilterConfig config)
+    public void init(final ServletConfig config)
             throws ServletException {
         this.remoteDeployment = new RemoteDeploymentImpl();
         this.remoteDeployment.init(config);
     }
 
     @Override
-    protected void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
+    protected void service(final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
 
         // Only PUT requests and matching Secret headers are accepted,
-        // otherwise the filter behaves as if it does not exist. This is the
-        // security concept. The filter reacts only after authorization.
+        // otherwise the Servlet behaves as if it does not exist. This is the
+        // security concept. The Servlet reacts only after authorization.
         try {this.remoteDeployment.service(request, response);
         } catch (RemoteDeploymentImpl.UnsupportedRequestException exception) {
-            super.doFilter(request, response, chain);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.flushBuffer();
         }
     }
 

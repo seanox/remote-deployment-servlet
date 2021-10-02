@@ -21,14 +21,17 @@
  */
 package com.seanox;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintStream;
 
-public class RemoteDeploymentPushTest {
+public class RemoteDeploymentServletTest {
 
     private static final PrintStream OUTPUT = System.out;
 
@@ -37,17 +40,50 @@ public class RemoteDeploymentPushTest {
         Application.main();
     }
 
+    private static final File OUTPUT_1 = new File("./output_servlet_1.png");
+    private static final File OUTPUT_2 = new File("./output_servlet_2.txt");
+    private static final File OUTPUT_3 = new File("./output_servlet_3.txt");
+
+    @BeforeEach
+    @AfterEach
+    void cleanUp() {
+        OUTPUT_1.delete();
+        OUTPUT_2.delete();
+        OUTPUT_3.delete();
+    }
+
     @Test
-    void test_1() {
+    void test_1()
+            throws Exception {
         final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputBuffer));
-        Throwable throwable = Assertions.assertThrows(Exception.class, RemoteDeploymentPush::main);
+        RemoteDeploymentPush.main("http://127.0.0.1:8080/FEDCBA9876543210",
+                "8H7G6F5E4D3C2B1A",
+                "./src/test/resources/example.png",
+                "-v");
         OUTPUT.println(outputBuffer);
-        Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
         final String outputText = outputBuffer.toString();
-        final String failedPattern = "usage: com.seanox.RemoteDeploymentPush";
-        if (!outputText.contains(failedPattern))
-            Assertions.fail("Missing output: " + failedPattern);
+        for (int index = 1; index < 6; index++) {
+            final String completePattern = String.format("Package %d of 6 complete (status 201,", index);
+            if (!outputText.contains(completePattern))
+                Assertions.fail("Missing output: " + completePattern);
+        }
+        // Some things happen with a time delay.
+        // The merging of the chunks and only then the command line is executed.
+        if (OUTPUT_1.exists())
+            Assertions.fail(OUTPUT_1 + " already exists");
+        Thread.sleep(1000);
+        if (!OUTPUT_1.exists())
+            Assertions.fail("Missing: " + OUTPUT_1);
+        if (OUTPUT_2.exists())
+            Assertions.fail(OUTPUT_2 + " already exists");
+        if (OUTPUT_3.exists())
+            Assertions.fail(OUTPUT_3 + " already exists");
+        Thread.sleep(10000);
+        if (!OUTPUT_2.exists())
+            Assertions.fail("Missing: " + OUTPUT_2);
+        if (!OUTPUT_3.exists())
+            Assertions.fail("Missing: " + OUTPUT_3);
     }
 
     @Test
@@ -55,20 +91,17 @@ public class RemoteDeploymentPushTest {
         final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputBuffer));
         Throwable throwable = Assertions.assertThrows(Exception.class, () ->
-            RemoteDeploymentPush.main("xxx")
+                RemoteDeploymentPush.main("http://127.0.0.1:8080/FEDCBA9876543210",
+                        "8H7G6F5E4D3C2B1Ax",
+                        "./src/test/resources/example.png",
+                        "-v")
         );
         OUTPUT.println(outputBuffer);
         Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
         final String outputText = outputBuffer.toString();
-        final String failedPattern = "usage: com.seanox.RemoteDeploymentPush";
+        final String failedPattern = String.format("Package %d of 6 failed (status 404,", 1);
         if (!outputText.contains(failedPattern))
             Assertions.fail("Missing output: " + failedPattern);
-        if (outputText.contains("Invalid destination URL"))
-            Assertions.fail("Output contains unexpected: Invalid destination URL");
-        if (outputText.contains("Invalid secret"))
-            Assertions.fail("Output contains unexpected: Invalid secret");
-        if (outputText.contains("Invalid path of data file"))
-            Assertions.fail("Output contains unexpected: Invalid path of data file");
     }
 
     @Test
@@ -76,20 +109,17 @@ public class RemoteDeploymentPushTest {
         final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputBuffer));
         Throwable throwable = Assertions.assertThrows(Exception.class, () ->
-            RemoteDeploymentPush.main("xxx", "xxx", "xxx")
+            RemoteDeploymentPush.main("http://127.0.0.1:8080/FEDCBA9876543210",
+                    "8H7G6F5E4D3C2B1A",
+                    "./src/test/resources/example.png_",
+                    "-v")
         );
         OUTPUT.println(outputBuffer);
         Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
         final String outputText = outputBuffer.toString();
-        final String failedPattern = "usage: com.seanox.RemoteDeploymentPush";
+        final String failedPattern = "Invalid path of data file: .\\src\\test\\resources\\example.png_";
         if (!outputText.contains(failedPattern))
             Assertions.fail("Missing output: " + failedPattern);
-        if (!outputText.contains("Invalid destination URL"))
-            Assertions.fail("Missing: Invalid destination URL");
-        if (outputText.contains("Invalid secret"))
-            Assertions.fail("Output contains unexpected: Invalid secret");
-        if (outputText.contains("Invalid path of data file"))
-            Assertions.fail("Output contains unexpected: Invalid path of data file");
     }
 
     @Test
@@ -97,38 +127,16 @@ public class RemoteDeploymentPushTest {
         final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputBuffer));
         Throwable throwable = Assertions.assertThrows(Exception.class, () ->
-                RemoteDeploymentPush.main("http://127.0.0.1/xxx", "_xxx", "xxx")
+            RemoteDeploymentPush.main("http://127.0.0.1:8080/FEDCBA9876543210_",
+                    "8H7G6F5E4D3C2B1A",
+                    "./src/test/resources/example.png",
+                    "-v")
         );
         OUTPUT.println(outputBuffer);
         Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
         final String outputText = outputBuffer.toString();
-        final String failedPattern = "usage: com.seanox.RemoteDeploymentPush";
+        final String failedPattern = String.format("Package %d of 6 failed (status 404,", 1);
         if (!outputText.contains(failedPattern))
             Assertions.fail("Missing output: " + failedPattern);
-        if (outputText.contains("Invalid destination URL"))
-            Assertions.fail("Output contains unexpected: Invalid destination URL");
-        if (!outputText.contains("Invalid secret"))
-            Assertions.fail("Missing: Invalid secret");
-    }
-
-    @Test
-    void test_5() {
-        final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputBuffer));
-        Throwable throwable = Assertions.assertThrows(Exception.class, () ->
-            RemoteDeploymentPush.main("http://127.0.0.1/xxx", "xxx", "xxx")
-        );
-        OUTPUT.println(outputBuffer);
-        Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
-        final String outputText = outputBuffer.toString();
-        final String failedPattern = "usage: com.seanox.RemoteDeploymentPush";
-        if (!outputText.contains(failedPattern))
-            Assertions.fail("Missing output: " + failedPattern);
-        if (outputText.contains("Invalid destination URL"))
-            Assertions.fail("Output contains unexpected: Invalid destination URL");
-        if (outputText.contains("Invalid secret"))
-            Assertions.fail("Output contains unexpected: Invalid secret");
-        if (!outputText.contains("Invalid path of data file"))
-            Assertions.fail("Missing: Invalid path of data file");
     }
 }
