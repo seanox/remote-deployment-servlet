@@ -67,12 +67,12 @@ import java.util.Objects;
  * filter behaves as if it does not exist. The filter reacts only after
  * sufficient authorization.
  *
- * RemoteDeploymentImpl 1.1.0 20211002<br>
+ * RemoteDeploymentImpl 1.1.0 20211003<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20211002
+ * @version 1.1.0 20211003
  */
 class RemoteDeploymentImpl {
 
@@ -284,7 +284,7 @@ class RemoteDeploymentImpl {
                         .filter(file -> file.isFile()
                                 && file.getName().startsWith(UUID + "---")
                                 && file.lastModified() <= expiration)
-                        .forEach(file -> file.delete());
+                        .forEach(File::delete);
             }
         }
     }
@@ -294,6 +294,6 @@ class RemoteDeploymentImpl {
         Arrays.stream(tempDirectory.listFiles())
                 .filter(file -> file.isFile()
                         && file.getName().startsWith(UUID + "---"))
-                .forEach(file -> file.delete());
+                .forEach(File::delete);
     }
 }

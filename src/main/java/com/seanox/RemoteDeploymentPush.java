@@ -57,12 +57,12 @@ import java.util.stream.Stream;
  * <br>
  * For the final version 1.0.0, parallel sending is still missing.<br>
  * <br>
- * RemoteDeploymentPush 0.9.0 20210921<br>
+ * RemoteDeploymentPush 0.9.0 20211003<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 0.9.0 20210921
+ * @version 0.9.0 20211003
  */
 public class RemoteDeploymentPush {
 
@@ -78,14 +78,8 @@ public class RemoteDeploymentPush {
         // errors on the command line, which is possible with the error code.
         final String stackTraceElementFilter = RemoteDeploymentPush.class.getPackageName() + ".";
         final Stream<StackTraceElement> stackTraceElementStream = Arrays.stream(new Throwable().getStackTrace());
-        if (stackTraceElementStream
-                .filter(stackTraceElement -> !stackTraceElement.getClassName().startsWith(stackTraceElementFilter))
-                .count() <= 0)
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                public void uncaughtException(final Thread thread, final Throwable throwable) {
-                    System.exit(1);
-                }
-            });
+        if (stackTraceElementStream.allMatch(stackTraceElement -> stackTraceElement.getClassName().startsWith(stackTraceElementFilter)))
+            Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> System.exit(1));
 
         final Deployment deployment;
         try {deployment = Deployment.create(arguments);
@@ -263,13 +257,13 @@ public class RemoteDeploymentPush {
 
                     try (final OutputStream outputStream = connection.getOutputStream()) {
                         for (int dataWriteNumber = 0; dataWriteNumber < this.packageSize; dataWriteNumber++) {
-                            final int digit = inputStream.read() & 0xFF;
+                            final int digit = inputStream.read();
                             if (digit < 0) {
-                                if (dataNumber > 0)
+                                if (dataWriteNumber < dataNumber)
                                     throw new EOFException(this.file.getCanonicalPath());
                                 break;
                             }
-                            outputStream.write(digit);
+                            outputStream.write(digit & 0xFF);
                             if (--dataNumber <= 0)
                                 break;
                         }
