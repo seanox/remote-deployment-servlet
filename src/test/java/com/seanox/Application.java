@@ -27,7 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.util.HashMap;
@@ -36,13 +36,11 @@ import java.util.Objects;
 @SpringBootApplication
 class Application extends SpringBootServletInitializer {
 
-    private static ApplicationContext applicationContext;
+    private static ConfigurableApplicationContext applicationContext;
 
-    static void main(final String... options) {
-
+    public static void main(final String... options) {
         if (Objects.nonNull(Application.applicationContext))
-            return;
-
+            applicationContext.close();
         final SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setBannerMode(Banner.Mode.CONSOLE);
         Application.applicationContext = springApplication.run(options);

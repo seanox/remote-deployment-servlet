@@ -21,8 +21,10 @@
  */
 package com.seanox;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -35,6 +37,12 @@ public class RemoteDeploymentPushTest {
     @BeforeAll
     static void startServlet() {
         Application.main();
+    }
+
+    @BeforeEach
+    @AfterEach
+    void cleanUp() {
+        System.setOut(OUTPUT);
     }
 
     @Test

@@ -47,6 +47,8 @@ public class RemoteDeploymentServletTest {
     @BeforeEach
     @AfterEach
     void cleanUp() {
+        System.setOut(OUTPUT);
+
         OUTPUT_1.delete();
         OUTPUT_2.delete();
         OUTPUT_3.delete();
