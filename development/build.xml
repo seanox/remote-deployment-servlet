@@ -35,27 +35,6 @@
     </sequential>
   </macrodef>
 
-  <macrodef name="sync-source-version">
-    <attribute name="file"/>
-    <sequential>
-      <echo>Synchronizing version in:: @{file}</echo>
-      <copy file="@{file}" tofile="@{file}_temp" overwrite="true"/>
-      <replaceregexp file="@{file}_temp"
-          match="(?s).*?@version\s+([\d\.]+\s+(\d{4})\d+).*$" flags="g" byline="false"
-          replace="source.version=\1&#x000D;source.year=\2"/>
-      <local name="source.version"/>
-      <local name="source.year"/>
-      <loadproperties srcfile="@{file}_temp"/>
-      <delete file="@{file}_temp"/>
-      <replaceregexp file="@{file}"
-          match="(\[Version )([\d\.]+\s\d+)(\])" flags="g" byline="false"
-          replace="\1${source.version}\3"/>
-      <replaceregexp file="@{file}"
-          match="(Copyright\s+\(C\)\s+)\d+" flags="g" byline="false"
-          replace="\1${source.year}"/>
-    </sequential>
-  </macrodef>
-
   <target name="changes">
     <release-locate/>
 
@@ -97,9 +76,9 @@
 
   <target name="release" depends="changes">
     <release-locate/>
-
-    <sync-source-version file="${workspace}/src/main/java/com/seanox/RemoteDeploymentPush.java"/>
-
+    <replaceregexp file="${workspace}/src/main/java/com/seanox/RemoteDeploymentPush.java"
+        match="(\[Version)[\d\s\.]+(\])" flags="g" byline="false"
+        replace="\1 ${release.version} ${release.date}\2"/>
     <replaceregexp file="${workspace}/pom.xml" flags="g" byline="false"
         match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}&lt;/artifactId&gt;\s*&lt;version&gt;)[\d\.]+(&lt;/version&gt;)"
         replace="\1${release.version}\2"/>
