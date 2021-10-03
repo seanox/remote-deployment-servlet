@@ -1,4 +1,7 @@
 0.9.5 2021xxxx
+  BF: Review: Optimization/Corrections
+  BF: Review: Correction of versioning
+  BF: Push: Correction for unexpected end of file
   CR: Servlet: Added as an alternative to the filter
       When the deployment should run outside the context of the application.
 
