@@ -13,7 +13,7 @@
 
   <groupId>com.seanox</groupId>
   <artifactId>seanox-remote-deployment</artifactId>
-  <version>0.9.0</version>
+  <version>0.9.5</version>
   <name>remote-deployment</name>
   <description>
     Remote deployment extension for servlet container environments.

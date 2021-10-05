@@ -34,7 +34,7 @@ Example of configuration via web.xml
 <web-app ...>
   ...
   <filter>
-    <servlet-name>RemoteDeploymentFilter</servlet-name>
+    <filter-name>RemoteDeploymentFilter</filter-name>
     <filter-class>com.seanox.RemoteDeploymentFilter</filter-class>
     <init-param>
       <param-name>secret</param-name>
@@ -59,7 +59,7 @@ Example of configuration via web.xml
     </init-param>
   </filter>
   <filter-mapping>
-    <filter-name>RemoteDeploymentServlet</filter-name>
+    <filter-name>RemoteDeploymentFilter</filter-name>
     <url-pattern>/97C698B4EF93088CAF0A721A792D3AB6</url-pattern>
   </filter-mapping>
   ...
@@ -68,12 +68,41 @@ Example of configuration via web.xml
 Important: Automatic deployment must be disabled for the servlet container. For
 example, for Tomcat, this can be configured in `server.xml` via `autoDeploy`.
 
+__RemoteDeploymentServlet__ The servlet is an alternative to the filter and is
+useful when the remote deployment is to run outside the context of the
+application. This makes the remote deployment accessible and usable even if the
+application is not available due to errors at startup.
+
+The servlet is configured analogously to the filter. It is recommended to use
+the servlet as a standalone WAR so that all advantages can be used.
+
+Example of configuration via web.xml
+
+```xml
+<web-app ...>
+  ...
+  <servlet>
+    <servlet-name>RemoteDeploymentServlet</servlet-name>
+    <servlet-class>com.seanox.RemoteDeploymentServlet</servlet-class>
+    <init-param>
+      ...
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RemoteDeploymentServlet</servlet-name>
+    <url-pattern>/97C698B4EF93088CAF0A721A792D3AB6</url-pattern>
+  </servlet-mapping>
+  ...
+</web-app>
+```
+
+
 __RemoteDeploymentPush__ is a command line tool without further dependencies
 and sends files, if necessary in chunks, using the Package header in the HTTP
 request and was developed specifically for RemoteDeploymentFilter.
 
 ```
-usage: java -jar seanox-remote-deployment-0.9.0.jar <url> <secret> <file> 
+usage: java -jar seanox-remote-deployment-0.9.5.jar <url> <secret> <file> 
   -p Proxy as URL, default port 3128
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes)
@@ -111,18 +140,17 @@ https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-remote-deployment</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.5</version>
 </dependency>
 ```
 
 
-# Manuals
-TODO:
-
-
 # Changes (Change Log)
-## 0.9.0 20210921 (summary of the current version)  
-NT: Release is available  
+## 0.9.5 20211005 (summary of the current version)  
+BF: Review: Optimization/Corrections  
+BF: Review: Correction of versioning  
+BF: Push: Correction for unexpected end of file  
+CR: Servlet: Added as an alternative to the filter  
 
 [Read more](https://raw.githubusercontent.com/seanox/remote-deployment-servlet/master/CHANGES)
 
