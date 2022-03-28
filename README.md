@@ -164,6 +164,7 @@ CR: Servlet: Added as an alternative to the filter
 # Thanks!
 <img src="https://raw.githubusercontent.com/seanox/seanox/master/sources/resources/images/thanks.png">
 
+[cantaa GmbH](https://cantaa.de/)  
 [JetBrains](https://www.jetbrains.com/?from=seanox)  
 Sven Lorenz  
 Andreas Mitterhofer  
