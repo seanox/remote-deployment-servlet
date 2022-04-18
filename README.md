@@ -140,7 +140,7 @@ https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-remote-deployment</artifactId>
-    <version>0.9.5</version>
+    <version>0.9.6</version>
 </dependency>
 ```
 
