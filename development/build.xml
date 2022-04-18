@@ -54,7 +54,7 @@
       <replaceregexp match="(Version) \d+(?:\.\d+)+ \d+" replace="\1 ${release.info.version} ${release.info.date}">
         <fileset dir="${workspace}" includes="${workspace.sources.filter}"/>
       </replaceregexp>
-      <replaceregexp match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}&lt;/artifactId&gt;\s*&lt;version&gt;)[\d\.]+(&lt;/version&gt;)"
+      <replaceregexp match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
           replace="\1${release.info.version}\2" flags="g" byline="false">
         <fileset dir="${workspace}" includes="${workspace.sources.filter}"/>
       </replaceregexp>
@@ -100,6 +100,9 @@
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(?&lt;=\(C\)\s)\d{4}\b" flags="g" byline="true"
         replace="${now.year}"/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
+        replace="\1${release.version}\2" flags="g" byline="false"/>
   </target>
 
   <target name="release" depends="changes">
