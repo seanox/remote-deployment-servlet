@@ -116,7 +116,7 @@ Folgenden Seanox Software Solutions oder kurz Seanox genannt.
 
 Diese Software unterliegt der Version 2 der Apache License.
 
-Copyright (C) 2021 Seanox Software Solutions
+Copyright (C) 2022 Seanox Software Solutions
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
@@ -146,11 +146,9 @@ https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment
 
 
 # Changes (Change Log)
-## 0.9.5 20211005 (summary of the current version)  
-BF: Review: Optimization/Corrections  
-BF: Review: Correction of versioning  
-BF: Push: Correction for unexpected end of file  
-CR: Servlet: Added as an alternative to the filter  
+## 0.9.6 20220418 (summary of the current version)  
+BF: Update of dependencies  
+BF: Build: Optimization of the release info process  
 
 [Read more](https://raw.githubusercontent.com/seanox/remote-deployment-servlet/master/CHANGES)
 
