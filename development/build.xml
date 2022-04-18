@@ -100,8 +100,12 @@
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(?&lt;=\(C\)\s)\d{4}\b" flags="g" byline="true"
         replace="${now.year}"/>
+
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
+        replace="\1${release.version}\2" flags="g" byline="false"/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(seanox-${ant.project.name}-)\d[\d\.]+(\.jar)"
         replace="\1${release.version}\2" flags="g" byline="false"/>
   </target>
 
