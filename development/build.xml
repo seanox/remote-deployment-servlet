@@ -107,6 +107,9 @@
     <replaceregexp file="${workspace}/README.md"
         match="(seanox-${ant.project.name}-)\d[\d\.]+(\.jar)"
         replace="\1${release.version}\2" flags="g" byline="false"/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(seanox-${ant.project.name}/)\d[\d\.]+"
+        replace="\1${release.version}" flags="g" byline="false"/>
   </target>
 
   <target name="release" depends="changes">
