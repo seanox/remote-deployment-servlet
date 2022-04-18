@@ -1,3 +1,8 @@
+0.9.6 20220418
+  BF: Update of dependencies
+      Vulnerabilities from dependencies: CVE-2022-22965
+  BF: Build: Optimization of the release info process
+
 0.9.5 20211005
   BF: Review: Optimization/Corrections
   BF: Review: Correction of versioning
