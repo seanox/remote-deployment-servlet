@@ -102,7 +102,7 @@ and sends files, if necessary in chunks, using the Package header in the HTTP
 request and was developed specifically for RemoteDeploymentFilter.
 
 ```
-usage: java -jar seanox-remote-deployment-0.9.5.jar <url> <secret> <file> 
+usage: java -jar seanox-remote-deployment-0.9.6.jar <url> <secret> <file> 
   -p Proxy as URL, default port 3128
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes)
@@ -135,7 +135,7 @@ Java 11 or higher
 
 
 # Downloads
-https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/0.9.6
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
