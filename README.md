@@ -135,6 +135,7 @@ Java 11 or higher
 
 
 # Downloads
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment  
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/0.9.6
 ```xml
 <dependency>
