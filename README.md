@@ -146,8 +146,8 @@ https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/0.9.6
 ```
 
 
-# Changes (Change Log)
-## 0.9.6 20220418 (summary of the current version)  
+# Changes 
+## 0.9.6 20220418   
 BF: Update of dependencies  
 BF: Build: Optimization of the release info process  
 
