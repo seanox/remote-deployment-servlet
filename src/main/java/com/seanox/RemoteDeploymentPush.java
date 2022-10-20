@@ -315,7 +315,7 @@ public class RemoteDeploymentPush {
             System.out.printf("usage: %s <url> <secret> <file> [options...]%n", RemoteDeploymentPush.class.getName());
             System.out.println(" -p Proxy as URL, default port 3128");
             System.out.println(" -h Additional HTTP request headers as <header>:<value>");
-            System.out.println(" -s Chunk size in bytes, default 4194304 bytes)");
+            System.out.println(" -s Chunk size in bytes, default 4194304 bytes");
             System.out.println(" -v Verbose exceptions with stacktrace");
         }
     }
