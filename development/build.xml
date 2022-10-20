@@ -15,7 +15,6 @@
   <property name="workspace.sources.filter" value="**/*.java,**/pom.xml"/>
   <property name="workspace.development" value="${workspace}/development"/>
   <property name="workspace.target" value="${workspace}/target"/>
-  <property name="workspace.releases" value="${workspace}/releases"/>
 
   <macrodef name="release-info-locate">
     <sequential>
