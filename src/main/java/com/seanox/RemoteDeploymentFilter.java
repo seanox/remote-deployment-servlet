@@ -124,10 +124,6 @@ import java.io.IOException;
  *   <li>Add the user and the permissions (mostly full access)</li>
  * </ul>
  *
- * RemoteDeploymentFilter 1.1.0 20211002<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * Alle Rechte vorbehalten.
- *
  * @author  Seanox Software Solutions
  * @version 1.1.0 20211002
  */

@@ -67,10 +67,6 @@ import java.util.Objects;
  * filter behaves as if it does not exist. The filter reacts only after
  * sufficient authorization.
  *
- * RemoteDeploymentImpl 1.1.0 20211003<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * Alle Rechte vorbehalten.
- *
  * @author  Seanox Software Solutions
  * @version 1.1.0 20211003
  */

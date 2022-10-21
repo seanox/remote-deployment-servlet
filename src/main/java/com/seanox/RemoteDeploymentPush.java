@@ -55,11 +55,7 @@ import java.util.stream.Stream;
  * &nbsp;&nbsp;&nbsp;&nbsp;-s Chunk size in bytes, default 4194304 bytes)<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;-v Verbose exceptions with stacktrace<br>
  * <br>
- * For the final version 1.0.0, parallel sending is still missing.<br>
- * <br>
- * RemoteDeploymentPush 0.9.0 20211003<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * Alle Rechte vorbehalten.
+ * For the final version 1.0.0, parallel sending is still missing.
  *
  * @author  Seanox Software Solutions
  * @version 0.9.0 20211003
