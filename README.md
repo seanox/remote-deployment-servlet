@@ -102,7 +102,7 @@ and sends files, if necessary in chunks, using the Package header in the HTTP
 request and was developed specifically for RemoteDeploymentFilter.
 
 ```
-usage: java -jar seanox-remote-deployment-0.9.6.jar <url> <secret> <file> 
+usage: java -jar seanox-remote-deployment-0.9.7.jar <url> <secret> <file> 
   -p Proxy as URL, default port 3128
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes)
@@ -116,7 +116,7 @@ Folgenden Seanox Software Solutions oder kurz Seanox genannt.
 
 Diese Software unterliegt der Version 2 der Apache License.
 
-Copyright (C) 2022 Seanox Software Solutions
+Copyright (C) 2023 Seanox Software Solutions
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
@@ -136,20 +136,21 @@ Java 11 or higher
 
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment  
-https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/0.9.6
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/0.9.7
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-remote-deployment</artifactId>
-    <version>0.9.6</version>
+    <version>0.9.7</version>
 </dependency>
 ```
 
 
 # Changes 
-## 0.9.6 20220418   
-BF: Update of dependencies  
+## 0.9.7 20231227  
+BF: Push: Correction from usage text  
 BF: Build: Optimization of the release info process  
+BF: Update of dependencies  
 
 [Read more](https://raw.githubusercontent.com/seanox/remote-deployment-servlet/master/CHANGES)
 
