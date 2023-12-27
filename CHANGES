@@ -1,19 +1,22 @@
+0.9.8 2024xxxx
+BF: Review: Optimization/Corrections
+
 0.9.7 20231227
-  BF: Push: Correction from usage text
-  BF: Build: Optimization of the release info process
-  BF: Update of dependencies
+BF: Push: Correction from usage text
+BF: Build: Optimization of the release info process
+BF: Update of dependencies
 
 0.9.6 20220418
-  BF: Update of dependencies
-      Vulnerabilities from dependencies: CVE-2022-22965
-  BF: Build: Optimization of the release info process
+BF: Update of dependencies
+    Vulnerabilities from dependencies: CVE-2022-22965
+BF: Build: Optimization of the release info process
 
 0.9.5 20211005
-  BF: Review: Optimization/Corrections
-  BF: Review: Correction of versioning
-  BF: Push: Correction for unexpected end of file
-  CR: Servlet: Added as an alternative to the filter
-      When the deployment should run outside the context of the application.
+BF: Review: Optimization/Corrections
+BF: Review: Correction of versioning
+BF: Push: Correction for unexpected end of file
+CR: Servlet: Added as an alternative to the filter
+    When the deployment should run outside the context of the application.
 
 0.9.0 20210921
-  NT: Release is available
+NT: Release is available
