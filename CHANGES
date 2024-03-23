@@ -1,5 +1,7 @@
 0.9.8 2024xxxx
 BF: Review: Optimization/Corrections
+CR: Servlet: Change to jakarta.servlet-api (4.x)
+    spring-boot is only used for testing
 
 0.9.7 20231227
 BF: Push: Correction from usage text
