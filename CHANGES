@@ -2,6 +2,12 @@
 BF: Review: Optimization/Corrections
 CR: Servlet: Change to jakarta.servlet-api (4.x)
     spring-boot is only used for testing
+CR: Build: Optimization for jakarta.servlet-api javax + jakarta
+    - Development of both versions in one project
+    - Development uses the current version of jakarta
+CR: Build: New approach for the version number
+    - Major version reflects the based Servlet API version
+    - Minor version reflects the version of remote-deployment-servlet
 
 0.9.7 20231227
 BF: Push: Correction from usage text
