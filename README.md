@@ -1,14 +1,14 @@
 <p>
   <a href="https://github.com/seanox/remote-deployment-servlet/pulls"
-      title="Development is waiting for new issues / requests / ideas">
-    <img src="https://img.shields.io/badge/development-passive-blue?style=for-the-badge">
-  </a>  
-  <a href="https://github.com/seanox/remote-deployment-servlet/issues">
-    <img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge">
-  </a>
-  <a href="http://seanox.de/contact">
-    <img src="https://img.shields.io/badge/support-active-green?style=for-the-badge">
-  </a>
+      title="Development is waiting for new issues / requests / ideas"
+    ><img src="https://img.shields.io/badge/development-passive-blue?style=for-the-badge"
+  ></a>  
+  <a href="https://github.com/seanox/remote-deployment-servlet/issues"
+    ><img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge"
+  ></a>
+  <a href="http://seanox.de/contact"
+    ><img src="https://img.shields.io/badge/support-active-green?style=for-the-badge"
+  ></a>
 </p>
 
 
@@ -105,7 +105,7 @@ request and was developed specifically for RemoteDeploymentFilter.
 usage: java -jar seanox-remote-deployment-0.9.7.jar <url> <secret> <file> 
   -p Proxy as URL, default port 3128
   -h Additional HTTP request headers as <header>:<value>
-  -s Chunk size in bytes, default 4194304 bytes)
+  -s Chunk size in bytes, default 4194304 bytes
   -v Verbose exceptions with stacktrace
 ```
 
