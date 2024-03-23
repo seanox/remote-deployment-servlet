@@ -190,4 +190,15 @@
     <cmd command="mvn package -DskipTests"/>
     <release-info-reset/>
   </target>
+
+  <target name="test">
+    <release-info-locate/>
+    <jakarta-servlet-api-4/>
+    <release-info-insert version="2.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn clean test"/>
+    <jakarta-servlet-api-6/>
+    <release-info-insert version="3.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn clean test"/>
+    <release-info-reset/>
+  </target>
 </project>
