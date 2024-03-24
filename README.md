@@ -109,6 +109,9 @@ usage: java -jar seanox-remote-deployment-0.9.7.jar <url> <secret> <file>
   -v Verbose exceptions with stacktrace
 ```
 
+__About the 0.9.x version: For the final version 1.0.0, parallel sending is
+still missing.__
+
 
 # Licence Agreement
 LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt, im
