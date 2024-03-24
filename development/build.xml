@@ -17,8 +17,8 @@
 
   <property name="spring.boot.2.version" value="2.7.18"/>
   <property name="spring.boot.3.version" value="3.2.1"/>
-  <property name="jakarta.servlet.api.4.version" value="4.0.4"/>
-  <property name="jakarta.servlet.api.6.version" value="6.0.0"/>
+  <property name="jakarta.api.javax.version" value="4.0.4"/>
+  <property name="jakarta.api.jakarta.version" value="6.0.0"/>
 
   <macrodef name="release-info-locate">
     <sequential>
@@ -97,12 +97,10 @@
 
   -->
 
-  <macrodef name="jakarta-servlet-api-4">
+  <macrodef name="jakarta-api-javax">
     <sequential>
       <local name="jakarta.version"/>
-      <property name="jakarta.version" value="${jakarta.servlet.api.4.version}"/>
-      <local name="spring.version"/>
-      <property name="spring.version" value="${spring.boot.2.version}"/>
+      <property name="jakarta.version" value="${jakarta.api.javax.version}"/>
       <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.jakarta" overwrite="true"/>
       <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="2"/>
       <release-info-locate/>
@@ -116,16 +114,14 @@
           replace="\1${jakarta.version}\2" flags="g" byline="false"/>
       <replaceregexp file="${workspace}/pom.xml"
           match="(?si)(&lt;artifactId&gt;spring-boot-starter-\w+\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
-          replace="\1${spring.version}\2" flags="g" byline="false"/>
+          replace="\1${spring.boot.2.version}\2" flags="g" byline="false"/>
     </sequential>
   </macrodef>
 
-  <macrodef name="jakarta-servlet-api-6">
+  <macrodef name="jakarta-api-jakarta">
     <sequential>
       <local name="jakarta.version"/>
-      <property name="jakarta.version" value="${jakarta.servlet.api.6.version}"/>
-      <local name="spring.version"/>
-      <property name="spring.version" value="${spring.boot.3.version}"/>
+      <property name="jakarta.version" value="${jakarta.api.jakarta.version}"/>
       <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.jakarta" overwrite="true"/>
       <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="6"/>
       <release-info-locate/>
@@ -139,7 +135,7 @@
           replace="\1${jakarta.version}\2" flags="g" byline="false"/>
       <replaceregexp file="${workspace}/pom.xml"
           match="(&lt;artifactId&gt;spring-boot-starter-\w+&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
-          replace="\1${spring.version}" flags="g" byline="false">
+          replace="\1${spring.boot.3.version}" flags="g" byline="false">
       </replaceregexp>
     </sequential>
   </macrodef>
@@ -182,10 +178,10 @@
   <target name="compile">
     <release-info-locate/>
     <cmd command="mvn clean -DskipTests"/>
-    <jakarta-servlet-api-4/>
+    <jakarta-api-javax/>
     <release-info-insert version="4.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn package -DskipTests"/>
-    <jakarta-servlet-api-6/>
+    <jakarta-api-jakarta/>
     <release-info-insert version="6.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn package -DskipTests"/>
     <release-info-reset/>
@@ -193,12 +189,41 @@
 
   <target name="test">
     <release-info-locate/>
-    <jakarta-servlet-api-4/>
+    <jakarta-api-javax/>
     <release-info-insert version="2.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn clean test"/>
-    <jakarta-servlet-api-6/>
+    <jakarta-api-jakarta/>
     <release-info-insert version="3.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn clean test"/>
+    <release-info-reset/>
+  </target>
+
+  <target name="release" depends="changes">
+    <release-info-locate/>
+    <antcall target="test"/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(?si)(&lt;version&gt;\s*\d+)[\.\d\s]+(&lt;/version&gt;)" flags="g" byline="true"
+        replace="\1.${release.minor}.${release.patch}\2"/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;\d+)[\d\.]+(&lt;/version&gt;)"
+        replace="\1.${release.minor}.${release.patch}\2" flags="g" byline="false"/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(seanox-${ant.project.name}/\d+)\.\d[\d\.]+"
+        replace="\1.${release.minor}.${release.patch}" flags="g" byline="false"/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(-jar seanox-remote-deployment-\d+)\.\d[\d\.]+.jar"
+        replace="\1.${release.minor}.${release.patch}" flags="g" byline="false"/>
+    <release-info-reset/>
+  </target>
+
+  <target name="publish" depends="release">
+    <release-info-locate/>
+    <jakarta-api-javax/>
+    <release-info-insert version="4.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn clean deploy -DskipTests"/>
+    <jakarta-api-jakarta/>
+    <release-info-insert version="6.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn clean deploy -DskipTests"/>
     <release-info-reset/>
   </target>
 </project>
