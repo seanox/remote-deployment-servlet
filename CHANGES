@@ -1,4 +1,4 @@
-0.9.8 2024xxxx
+1.0.0 20241208
 BF: Review: Optimization/Corrections
 BF: Update of dependencies
 CR: Build: Change to jakarta.servlet-api (4.x)

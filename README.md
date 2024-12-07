@@ -65,8 +65,16 @@ Example of configuration via web.xml
   ...
 </web-app>
 ```
-Important: Automatic deployment must be disabled for the servlet container. For
-example, for Tomcat, this can be configured in `server.xml` via `autoDeploy`.
+> [!IMPORTANT]  
+> Automatic deployment must be disabled for the servlet container. For example,
+> for Tomcat, this can be configured in `server.xml` via `autoDeploy`.
+
+> [!IMPORTANT]  
+> The project provides releases for the Servlet API 4 and 6. The major number in
+> the release number always references the servlet API, followed by the major,
+> minor and patch number of the release. Therefore, both versions are always
+> described in the following documentation.
+
 
 __RemoteDeploymentServlet__ The servlet is an alternative to the filter and is
 useful when the remote deployment is to run outside the context of the
@@ -102,7 +110,15 @@ and sends files, if necessary in chunks, using the Package header in the HTTP
 request and was developed specifically for RemoteDeploymentFilter.
 
 ```
-usage: java -jar seanox-remote-deployment-0.9.7.jar <url> <secret> <file>
+usage: java -jar seanox-remote-deployment-4.1.0.0.jar <url> <secret> <file>
+  -p Proxy as URL, default port 3128
+  -h Additional HTTP request headers as <header>:<value>
+  -s Chunk size in bytes, default 4194304 bytes
+  -v Verbose exceptions with stacktrace
+```
+
+```
+usage: java -jar seanox-remote-deployment-6.1.0.0.jar <url> <secret> <file>
   -p Proxy as URL, default port 3128
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes
@@ -117,9 +133,6 @@ Package: <uuid>/<secret>/<package-number>/<package-count>/<check-sum>
 ...
 ```
 
-__About the 0.9.x version: For the final version 1.0.0, parallel sending is
-still missing.__
-
 
 # Licence Agreement
 LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt, im
@@ -127,7 +140,7 @@ Folgenden Seanox Software Solutions oder kurz Seanox genannt.
 
 Diese Software unterliegt der Version 2 der Apache License.
 
-Copyright (C) 2023 Seanox Software Solutions
+Copyright (C) 2024 Seanox Software Solutions
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
@@ -147,21 +160,30 @@ Java 11 or higher
 
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment  
-https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/0.9.7
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/4.1.0.0
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-remote-deployment</artifactId>
-    <version>0.9.7</version>
+    <version>4.1.0.0</version>
+</dependency>
+```
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/6.1.0.0
+```xml
+<dependency>
+    <groupId>com.seanox</groupId>
+    <artifactId>seanox-remote-deployment</artifactId>
+    <version>6.1.0.0</version>
 </dependency>
 ```
 
-
 # Changes 
-## 0.9.7 20231227  
-BF: Push: Correction from usage text  
-BF: Build: Optimization of the release info process  
+## 1.0.0 20241208  
+BF: Review: Optimization/Corrections  
 BF: Update of dependencies  
+CR: Build: Change to jakarta.servlet-api (4.x)  
+CR: Build: Optimization for jakarta.servlet-api javax + jakarta  
+CR: Build: New approach for the version number  
 
 [Read more](https://raw.githubusercontent.com/seanox/remote-deployment-servlet/master/CHANGES)
 
@@ -169,4 +191,4 @@ BF: Update of dependencies
 # Contact
 [Issues](https://github.com/seanox/remote-deployment-servlet/issues)  
 [Requests](https://github.com/seanox/remote-deployment-servlet/pulls)  
-[Mail](http://seanox.de/contact)  
+[Mail](https://seanox.com/contact)  
