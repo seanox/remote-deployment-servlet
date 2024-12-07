@@ -16,9 +16,9 @@
   <property name="workspace.target" value="${workspace}/target"/>
 
   <property name="spring.boot.2.version" value="2.7.18"/>
-  <property name="spring.boot.3.version" value="3.2.1"/>
+  <property name="spring.boot.3.version" value="3.4.0"/>
   <property name="jakarta.api.javax.version" value="4.0.4"/>
-  <property name="jakarta.api.jakarta.version" value="6.0.0"/>
+  <property name="jakarta.api.jakarta.version" value="6.1.0"/>
 
   <macrodef name="release-info-locate">
     <sequential>
