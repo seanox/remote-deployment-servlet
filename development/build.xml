@@ -179,10 +179,10 @@
     <release-info-locate/>
     <cmd command="mvn clean -DskipTests"/>
     <jakarta-api-javax/>
-    <release-info-insert version="4.${release.minor}.${release.patch} ${release.date}"/>
+    <release-info-insert version="4.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn package -DskipTests"/>
     <jakarta-api-jakarta/>
-    <release-info-insert version="6.${release.minor}.${release.patch} ${release.date}"/>
+    <release-info-insert version="6.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn package -DskipTests"/>
     <release-info-reset/>
   </target>
@@ -190,10 +190,10 @@
   <target name="test">
     <release-info-locate/>
     <jakarta-api-javax/>
-    <release-info-insert version="2.${release.minor}.${release.patch} ${release.date}"/>
+    <release-info-insert version="4.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn clean test"/>
     <jakarta-api-jakarta/>
-    <release-info-insert version="3.${release.minor}.${release.patch} ${release.date}"/>
+    <release-info-insert version="6.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn clean test"/>
     <release-info-reset/>
   </target>
@@ -203,26 +203,26 @@
     <antcall target="test"/>
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(&lt;version&gt;\s*\d+)[\.\d\s]+(&lt;/version&gt;)" flags="g" byline="true"
-        replace="\1.${release.minor}.${release.patch}\2"/>
+        replace="\1.${release.major}.${release.minor}.${release.patch}\2"/>
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;\d+)[\d\.]+(&lt;/version&gt;)"
-        replace="\1.${release.minor}.${release.patch}\2" flags="g" byline="false"/>
+        replace="\1.${release.major}.${release.minor}.${release.patch}\2" flags="g" byline="false"/>
     <replaceregexp file="${workspace}/README.md"
         match="(seanox-${ant.project.name}/\d+)\.\d[\d\.]+"
-        replace="\1.${release.minor}.${release.patch}" flags="g" byline="false"/>
+        replace="\1.${release.major}.${release.minor}.${release.patch}" flags="g" byline="false"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(-jar seanox-remote-deployment-\d+)\.\d[\d\.]+.jar"
-        replace="\1.${release.minor}.${release.patch}" flags="g" byline="false"/>
+        match="(-jar seanox-remote-deployment-\d+)\.\d[\d\.]+(\.jar)"
+        replace="\1.${release.major}.${release.minor}.${release.patch}\2" flags="g" byline="false"/>
     <release-info-reset/>
   </target>
 
   <target name="publish" depends="release">
     <release-info-locate/>
     <jakarta-api-javax/>
-    <release-info-insert version="4.${release.minor}.${release.patch} ${release.date}"/>
+    <release-info-insert version="4.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn clean deploy -DskipTests"/>
     <jakarta-api-jakarta/>
-    <release-info-insert version="6.${release.minor}.${release.patch} ${release.date}"/>
+    <release-info-insert version="6.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
     <cmd command="mvn clean deploy -DskipTests"/>
     <release-info-reset/>
   </target>
