@@ -1,5 +1,6 @@
 0.9.8 2024xxxx
 BF: Review: Optimization/Corrections
+BF: Update of dependencies
 CR: Build: Change to jakarta.servlet-api (4.x)
     spring-boot is only used for testing
 CR: Build: Optimization for jakarta.servlet-api javax + jakarta

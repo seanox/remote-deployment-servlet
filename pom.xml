@@ -41,13 +41,13 @@
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
-      <version>6.0.0</version>
+      <version>6.1.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>3.2.1</version>
+      <version>3.4.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -59,7 +59,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.2.1</version>
+      <version>3.4.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.10.1</version>
+      <version>5.11.3</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
