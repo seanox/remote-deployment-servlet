@@ -159,17 +159,17 @@ https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/4.1.0.0
 ```xml
 <dependency>
-    <groupId>com.seanox</groupId>
-    <artifactId>seanox-remote-deployment</artifactId>
-    <version>4.1.0.0</version>
+  <groupId>com.seanox</groupId>
+  <artifactId>seanox-remote-deployment</artifactId>
+  <version>4.1.0.0</version>
 </dependency>
 ```
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/6.1.0.0
 ```xml
 <dependency>
-    <groupId>com.seanox</groupId>
-    <artifactId>seanox-remote-deployment</artifactId>
-    <version>6.1.0.0</version>
+  <groupId>com.seanox</groupId>
+  <artifactId>seanox-remote-deployment</artifactId>
+  <version>6.1.0.0</version>
 </dependency>
 ```
 
