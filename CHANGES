@@ -1,3 +1,6 @@
+1.1.0 2026xxxx
+CR: Test: Omission of test reports (there are better CI/CD solutions)
+
 1.0.0 20241208
 BF: Review: Optimization/Corrections
 BF: Update of dependencies
