@@ -11,9 +11,7 @@
   ></a>
 </p>
 
-
 # Description
-
 In some cases where deployment with modern containers is not yet possible, a
 JEE application can be updated with the manager because a restart of the
 application server is required, command line execution is needed, or the
@@ -75,7 +73,6 @@ Example of configuration via web.xml
 > minor and patch number of the release. Therefore, both versions are always
 > described in the following documentation.
 
-
 __RemoteDeploymentServlet__ The servlet is an alternative to the filter and is
 useful when the remote deployment is to run outside the context of the
 application. This makes the remote deployment accessible and usable even if the
@@ -103,7 +100,6 @@ Example of configuration via web.xml
   ...
 </web-app>
 ```
-
 
 __RemoteDeploymentPush__ is a command line tool without further dependencies
 and sends files, if necessary in chunks, using the Package header in the HTTP
@@ -134,7 +130,7 @@ Package: <uuid>/<secret>/<package-number>/<package-count>/<check-sum>
 ```
 
 
-# Licence Agreement
+# License Terms
 LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt, im
 Folgenden Seanox Software Solutions oder kurz Seanox genannt.
 
@@ -176,6 +172,7 @@ https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/6.1.0.0
     <version>6.1.0.0</version>
 </dependency>
 ```
+
 
 # Changes 
 ## 1.0.0 20241208  
