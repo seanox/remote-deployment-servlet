@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der GNU General Public License.
- *
  * Remote Deployment Servlet
  * Copyright (C) 2021 Seanox Software Solutions
  *

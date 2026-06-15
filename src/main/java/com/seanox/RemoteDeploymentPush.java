@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der GNU General Public License.
- *
  * Remote Deployment Servlet
  * Copyright (C) 2021 Seanox Software Solutions
  *
@@ -56,9 +52,6 @@ import java.util.stream.Stream;
  * &nbsp;&nbsp;&nbsp;&nbsp;-v Verbose exceptions with stacktrace<br>
  * <br>
  * For the final version 1.0.0, parallel sending is still missing.
- *
- * @author  Seanox Software Solutions
- * @version 0.9.0 20211003
  */
 public class RemoteDeploymentPush {
 

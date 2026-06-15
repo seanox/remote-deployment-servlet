@@ -123,9 +123,6 @@ import java.io.IOException;
  *   <li>Open Services - Permissions</li>
  *   <li>Add the user and the permissions (mostly full access)</li>
  * </ul>
- *
- * @author  Seanox Software Solutions
- * @version 1.1.0 20211002
  */
 public class RemoteDeploymentFilter extends HttpFilter {
 
