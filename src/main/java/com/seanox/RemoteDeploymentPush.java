@@ -220,7 +220,7 @@ public class RemoteDeploymentPush {
 
         private void push()
                 throws IOException {
-            try (InputStream inputStream = new BufferedInputStream(
+            try (final InputStream inputStream = new BufferedInputStream(
                     new FileInputStream(this.file))) {
                 long packageNumber = 0;
                 long dataNumber = this.file.length();
