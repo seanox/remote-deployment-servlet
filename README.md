@@ -129,7 +129,6 @@ Package: <uuid>/<secret>/<package-number>/<package-count>/<check-sum>
 ...
 ```
 
-
 # License Terms
 Seanox Software Solutions is an open-source project, hereinafter referred to as
 __Seanox__.
@@ -149,10 +148,8 @@ under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 
-
 # System Requirement
 Java 11 or higher
-
 
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment  
@@ -173,7 +170,6 @@ https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/6.1.0.0
 </dependency>
 ```
 
-
 # Changes 
 ## 1.0.0 20241208  
 BF: Review: Optimization/Corrections  
@@ -183,7 +179,6 @@ CR: Build: Optimization for jakarta.servlet-api javax + jakarta
 CR: Build: New approach for the version number  
 
 [Read more](https://raw.githubusercontent.com/seanox/remote-deployment-servlet/master/CHANGES)
-
 
 # Contact
 [Issues](https://github.com/seanox/remote-deployment-servlet/issues)  
