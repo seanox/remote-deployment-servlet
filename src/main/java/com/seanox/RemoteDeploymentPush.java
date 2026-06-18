@@ -18,17 +18,19 @@
 package com.seanox;
 
 import java.io.BufferedInputStream;
-import java.io.EOFException;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
+import java.net.ProxySelector;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +52,7 @@ import java.util.stream.Stream;
  * &nbsp;&nbsp;&nbsp;&nbsp;-h Additional HTTP request headers as <header>:<value><br>
  * &nbsp;&nbsp;&nbsp;&nbsp;-s Chunk size in bytes, default 4194304 bytes)<br>
  * &nbsp;&nbsp;&nbsp;&nbsp;-v Verbose exceptions with stacktrace<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;-d Verbose HTTP client output (debug mode)<br>
  * <br>
  * For the final version 1.0.0, parallel sending is still missing.
  */
@@ -76,6 +79,9 @@ public class RemoteDeploymentPush {
             throw new AbortState(exception);
         }
 
+        if (deployment.debugMode)
+            System.setProperty("jdk.httpclient.HttpClient.log", "requests,headers,errors");        
+        
         RemoteDeploymentPush.verbose = deployment.verbose;
 
         System.out.printf("Seanox %s [Version 0.0.0 00000000]%n", RemoteDeploymentPush.class.getSimpleName());
@@ -93,6 +99,9 @@ public class RemoteDeploymentPush {
         System.out.println();
         try {deployment.push();
         } catch (Exception exception) {
+            if (exception instanceof AbortState)
+                throw exception;
+            exception.printStackTrace(System.out);
             throw new AbortState(exception);
         }
     }
@@ -108,6 +117,7 @@ public class RemoteDeploymentPush {
         private final int packageCount;
         private final int packageSize;
         private final boolean verbose;
+        private final boolean debugMode;
         private final String uuid;
 
         private static String[] detectRequestHeader(final String... arguments) {
@@ -155,6 +165,10 @@ public class RemoteDeploymentPush {
             return Arrays.stream(arguments).map(String::toLowerCase).collect(Collectors.toList()).contains("-v");
         }
 
+        private static boolean detectDebugMode(final String... arguments) {
+            return Arrays.stream(arguments).map(String::toLowerCase).collect(Collectors.toList()).contains("-d");
+        }
+        
         private static String calcFileCheckSum(final File file)
                 throws Exception {
             final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
@@ -203,6 +217,7 @@ public class RemoteDeploymentPush {
             this.packageSize = Deployment.detectPackageSize(arguments);
             this.packageCount = (int)Math.ceil(this.file.length() /(double)(this.packageSize));
             this.verbose = Deployment.detectVerbose(arguments);
+            this.debugMode = Deployment.detectDebugMode(arguments);
             this.uuid = UUID.randomUUID().toString().toUpperCase();
         }
 
@@ -211,59 +226,58 @@ public class RemoteDeploymentPush {
             return new Deployment(arguments);
         }
 
-        private HttpURLConnection createConnection()
-                throws IOException {
+        private HttpClient createClient() {
+            final HttpClient.Builder builder = HttpClient.newBuilder()
+                    .version(HttpClient.Version.HTTP_1_1);
             if (Objects.nonNull(this.httpProxy))
-                return (HttpURLConnection)this.destination.openConnection(this.httpProxy);
-            return (HttpURLConnection)this.destination.openConnection();
+                builder.proxy(ProxySelector.of(
+                        (InetSocketAddress)this.httpProxy.address()));
+            return builder.build();
         }
 
         private void push()
                 throws IOException {
-            try (final InputStream inputStream = new BufferedInputStream(
-                    new FileInputStream(this.file))) {
+            final HttpClient client = this.createClient();
+            try (final DataInputStream inputStream = new DataInputStream(new FileInputStream(this.file))) {
                 long packageNumber = 0;
                 long dataNumber = this.file.length();
-                while (dataNumber > 0) {
-                    final long timing = System.currentTimeMillis();
-                    final HttpURLConnection connection = this.createConnection();
-                    connection.setRequestMethod("PUT");
-                    connection.setDoOutput(true);
-                    if (Objects.nonNull(this.requestHeader))
-                        for (final String property : this.requestHeader) {
-                            final String propertyPattern = "^\\s*(.*?)\\s*(?::\\s*(.*?))?\\s*$";
-                            final String propertyKey = property.replaceAll(propertyPattern, "$1");
-                            final String propertyValue = property.replaceAll(propertyPattern, "$2");
-                            if (propertyKey.isBlank()
-                                    || propertyValue.isBlank())
-                                continue;
-                            connection.setRequestProperty(propertyKey, propertyValue);
-                        }
-                    connection.setRequestProperty(HTTP_HEADER_PACKAGE,
-                            String.format("%s/%s/%s/%s/%s",
-                                    this.uuid, this.secret, ++packageNumber, this.packageCount, this.checkSum));
-                    connection.connect();
-
-                    try (final OutputStream outputStream = connection.getOutputStream()) {
-                        for (int dataWriteNumber = 0; dataWriteNumber < this.packageSize; dataWriteNumber++) {
-                            final int digit = inputStream.read();
-                            if (digit < 0) {
-                                if (dataWriteNumber < dataNumber)
-                                    throw new EOFException(this.file.getCanonicalPath());
-                                break;
+                try {
+                    while (dataNumber > 0) {
+                        final long timing = System.currentTimeMillis();
+                        final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                                .uri(this.destination.toURI());
+                        if (Objects.nonNull(this.requestHeader))
+                            for (final String property : this.requestHeader) {
+                                final String propertyPattern = "^\\s*(.*?)\\s*(?::\\s*(.*?))?\\s*$";
+                                final String propertyKey = property.replaceAll(propertyPattern, "$1");
+                                final String propertyValue = property.replaceAll(propertyPattern, "$2");
+                                if (propertyKey.isBlank()
+                                        || propertyValue.isBlank())
+                                    continue;
+                                requestBuilder.header(propertyKey, propertyValue);
                             }
-                            outputStream.write(digit & 0xFF);
-                            if (--dataNumber <= 0)
-                                break;
-                        }
+                        requestBuilder.header(HTTP_HEADER_PACKAGE,
+                                String.format("%s/%s/%s/%s/%s",
+                                        this.uuid, this.secret, ++packageNumber, this.packageCount, this.checkSum));
+                        final byte[] buffer = new byte[(int)Math.min(dataNumber, this.packageSize)];
+                        inputStream.readFully(buffer);
+                        requestBuilder.PUT(HttpRequest.BodyPublishers.ofByteArray(buffer));
+                        final HttpResponse<Void> response = client.send(
+                                requestBuilder.build(),
+                                HttpResponse.BodyHandlers.discarding());                        
+                        final int responseCode = response.statusCode();
+                        if (responseCode != 201)
+                            throw new AbortState(String.format("Package %d of %d failed (status %d, %d ms)",
+                                    packageNumber, packageCount, responseCode, System.currentTimeMillis() -timing));
+                        System.out.printf("Package %d of %d complete (status %d, %d ms)%n",
+                                packageNumber, packageCount, responseCode, System.currentTimeMillis() -timing);
+                        dataNumber -= buffer.length;
                     }
-
-                    final int responseCode = connection.getResponseCode();
-                    connection.disconnect();
-
-                    if (responseCode != 201)
-                        throw new AbortState(String.format("Package %d of %d failed (status %d, %d ms)", packageNumber, packageCount, responseCode, System.currentTimeMillis() -timing));
-                    System.out.printf("Package %d of %d complete (status %d, %d ms)%n", packageNumber, packageCount, responseCode, System.currentTimeMillis() -timing);
+                } catch (Exception exception) {
+                    if (exception instanceof AbstractState)
+                        throw (AbstractState)exception;
+                    throw new AbortState(String.format("Package %d of %d failed (%s)",
+                            packageNumber, packageCount, exception.getMessage()));
                 }
             }
         }
@@ -306,6 +320,7 @@ public class RemoteDeploymentPush {
             System.out.println(" -h Additional HTTP request headers as <header>:<value>");
             System.out.println(" -s Chunk size in bytes, default 4194304 bytes");
             System.out.println(" -v Verbose exceptions with stacktrace");
+            System.out.println(" -d Verbose HTTP client output (debug mode)");
         }
     }
 
