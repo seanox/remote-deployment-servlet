@@ -69,13 +69,19 @@ Example of configuration via web.xml
 > for Tomcat, this can be configured in `server.xml` via `autoDeploy`.
 
 > [!WARNING]
-> __The `command` parameter poses a significant security risk and should only
-> be used as a workaround.__ The recommended approach is a full decoupling from
-> the application server / servlet container: an external deployment agent (cron
-> job or daemon) monitors the delivered artifact outside the web application,
-> performs a validated deployment (e.g. atomic move into the deployment
-> directory), and then triggers container restart or deployment activation (e.g.
-> via `autoDeploy` or a controlled restart of the application server).
+> __The `command` parameter poses a significant security risk and should only be
+> used as a workaround.__  
+> The recommended approach is a full decoupling from the application server /
+> servlet container:
+> - Use an external deployment agent (e.g. cron job or daemon) outside the web
+>   application
+> - Monitor the delivered artifact independently of the application runtime
+> - Perform validated deployments (e.g. atomic move into the deployment
+>   directory)
+> - Use a proposed architecture with a preposed web server with additional
+>   authorization
+> - Trigger deployment activation via: `autoDeploy`, or a controlled restart of
+>   the application server
 
 > [!IMPORTANT]  
 > The project provides releases for the Servlet API 4 and 6. The major number in
