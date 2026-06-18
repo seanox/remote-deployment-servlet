@@ -17,12 +17,14 @@
  */
 package com.seanox;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * The RemoteDeploymentServlet supports HTTP-based updating of Web
@@ -140,7 +142,10 @@ public class RemoteDeploymentServlet extends HttpServlet {
         // security concept. The Servlet reacts only after authorization.
         try {this.remoteDeployment.service(request, response);
         } catch (RemoteDeploymentImpl.UnsupportedRequestException exception) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            try {request.getInputStream().transferTo(OutputStream.nullOutputStream());
+            } catch (IOException ignored) {
+            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);  
             response.flushBuffer();
         }
     }

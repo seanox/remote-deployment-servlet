@@ -21,13 +21,15 @@
  */
 package com.seanox;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * The RemoteDeploymentFilter supports HTTP-based updating of Web applications.
@@ -144,7 +146,11 @@ public class RemoteDeploymentFilter extends HttpFilter {
         // security concept. The filter reacts only after authorization.
         try {this.remoteDeployment.service(request, response);
         } catch (RemoteDeploymentImpl.UnsupportedRequestException exception) {
-            super.doFilter(request, response, chain);
+            try {request.getInputStream().transferTo(OutputStream.nullOutputStream());
+            } catch (IOException ignored) {
+            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);  
+            response.flushBuffer();
         }
     }
 

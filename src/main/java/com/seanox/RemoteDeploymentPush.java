@@ -65,6 +65,9 @@ public class RemoteDeploymentPush {
     public static void main(String... arguments)
             throws Exception {
 
+        if (Deployment.detectDebugMode(arguments))
+            System.setProperty("jdk.httpclient.HttpClient.log", "requests,headers,errors");        
+        
         // If RemoteDeploymentPush is run standalone, System.exit(1) is called
         // in case of an error, assuming that the call can be checked for
         // errors on the command line, which is possible with the error code.
@@ -79,9 +82,6 @@ public class RemoteDeploymentPush {
             throw new AbortState(exception);
         }
 
-        if (deployment.debugMode)
-            System.setProperty("jdk.httpclient.HttpClient.log", "requests,headers,errors");        
-        
         RemoteDeploymentPush.verbose = deployment.verbose;
 
         System.out.printf("Seanox %s [Version 0.0.0 00000000]%n", RemoteDeploymentPush.class.getSimpleName());
@@ -227,8 +227,7 @@ public class RemoteDeploymentPush {
         }
 
         private HttpClient createClient() {
-            final HttpClient.Builder builder = HttpClient.newBuilder()
-                    .version(HttpClient.Version.HTTP_1_1);
+            final HttpClient.Builder builder = HttpClient.newBuilder();
             if (Objects.nonNull(this.httpProxy))
                 builder.proxy(ProxySelector.of(
                         (InetSocketAddress)this.httpProxy.address()));
@@ -238,12 +237,12 @@ public class RemoteDeploymentPush {
         private void push()
                 throws IOException {
             final HttpClient client = this.createClient();
+            final long timing = System.currentTimeMillis();
             try (final DataInputStream inputStream = new DataInputStream(new FileInputStream(this.file))) {
                 long packageNumber = 0;
                 long dataNumber = this.file.length();
                 try {
                     while (dataNumber > 0) {
-                        final long timing = System.currentTimeMillis();
                         final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                                 .uri(this.destination.toURI());
                         if (Objects.nonNull(this.requestHeader))
@@ -276,8 +275,8 @@ public class RemoteDeploymentPush {
                 } catch (Exception exception) {
                     if (exception instanceof AbstractState)
                         throw (AbstractState)exception;
-                    throw new AbortState(String.format("Package %d of %d failed (%s)",
-                            packageNumber, packageCount, exception.getMessage()));
+                    throw new AbortState(String.format("Package %d of %d rejected (%d ms)",
+                            packageNumber, packageCount, System.currentTimeMillis() -timing));
                 } finally {
                     client.close();
                 }
