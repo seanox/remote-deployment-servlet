@@ -278,6 +278,8 @@ public class RemoteDeploymentPush {
                         throw (AbstractState)exception;
                     throw new AbortState(String.format("Package %d of %d failed (%s)",
                             packageNumber, packageCount, exception.getMessage()));
+                } finally {
+                    client.close();
                 }
             }
         }
