@@ -121,6 +121,7 @@ usage: java -jar seanox-remote-deployment-4.1.0.0.jar <url> <secret> <file>
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes
   -v Verbose exceptions with stacktrace
+  -d Verbose HTTP client output (debug mode) 
 ```
 
 ```
@@ -129,6 +130,7 @@ usage: java -jar seanox-remote-deployment-6.1.0.0.jar <url> <secret> <file>
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes
   -v Verbose exceptions with stacktrace
+  -d Verbose HTTP client output (debug mode) 
 ```
 
 Structure of the HTTP request
