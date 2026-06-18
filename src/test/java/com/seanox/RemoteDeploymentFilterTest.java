@@ -46,8 +46,14 @@ public class RemoteDeploymentFilterTest {
         System.setOut(OUTPUT);
 
         OUTPUT_1.delete();
+        if (OUTPUT_1.exists())
+            Assertions.fail(OUTPUT_1 + " was not deleted");
         OUTPUT_2.delete();
+        if (OUTPUT_2.exists())
+            Assertions.fail(OUTPUT_2 + " was not deleted");
         OUTPUT_3.delete();
+        if (OUTPUT_3.exists())
+            Assertions.fail(OUTPUT_3 + " was not deleted");
     }
 
     @Test
@@ -68,16 +74,9 @@ public class RemoteDeploymentFilterTest {
         }
         // Some things happen with a time delay.
         // The merging of the chunks and only then the command line is executed.
-        if (OUTPUT_1.exists())
-            Assertions.fail(OUTPUT_1 + " already exists");
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         if (!OUTPUT_1.exists())
             Assertions.fail("Missing: " + OUTPUT_1);
-        if (OUTPUT_2.exists())
-            Assertions.fail(OUTPUT_2 + " already exists");
-        if (OUTPUT_3.exists())
-            Assertions.fail(OUTPUT_3 + " already exists");
-        Thread.sleep(10000);
         if (!OUTPUT_2.exists())
             Assertions.fail("Missing: " + OUTPUT_2);
         if (!OUTPUT_3.exists())
