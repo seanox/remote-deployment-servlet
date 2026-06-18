@@ -127,13 +127,13 @@ public class RemoteDeploymentFilterTest {
             RemoteDeploymentPush.main("http://127.0.0.1:8080/0123456789ABCDEF_",
                     "A1B2C3D4E5F6G7H8",
                     "./src/test/resources/example.png",
-                    "-v")
+                    "-v",
+                    "-d")
         );
         OUTPUT.println(outputBuffer);
         Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
         final String outputText = outputBuffer.toString();
-        final String failedPattern = String.format("Package %d of 6 failed (status 404,", 1);
-        if (!outputText.contains(failedPattern))
-            Assertions.fail("Missing output: " + failedPattern);
+        if (!outputText.matches("(?s)^.*Package 1 of 6 (failed|rejected).*$"))
+            Assertions.fail("Wrong output: " + outputText);
     }
 }

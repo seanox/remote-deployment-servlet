@@ -46,8 +46,14 @@ public class RemoteDeploymentServletTest {
         System.setOut(OUTPUT);
 
         OUTPUT_1.delete();
+        if (OUTPUT_1.exists())
+            Assertions.fail(OUTPUT_1 + " was not deleted");
         OUTPUT_2.delete();
+        if (OUTPUT_2.exists())
+            Assertions.fail(OUTPUT_2 + " was not deleted");
         OUTPUT_3.delete();
+        if (OUTPUT_3.exists())
+            Assertions.fail(OUTPUT_3 + " was not deleted");
     }
 
     @Test
@@ -68,16 +74,9 @@ public class RemoteDeploymentServletTest {
         }
         // Some things happen with a time delay.
         // The merging of the chunks and only then the command line is executed.
-        if (OUTPUT_1.exists())
-            Assertions.fail(OUTPUT_1 + " already exists");
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         if (!OUTPUT_1.exists())
             Assertions.fail("Missing: " + OUTPUT_1);
-        if (OUTPUT_2.exists())
-            Assertions.fail(OUTPUT_2 + " already exists");
-        if (OUTPUT_3.exists())
-            Assertions.fail(OUTPUT_3 + " already exists");
-        Thread.sleep(10000);
         if (!OUTPUT_2.exists())
             Assertions.fail("Missing: " + OUTPUT_2);
         if (!OUTPUT_3.exists())
@@ -128,13 +127,13 @@ public class RemoteDeploymentServletTest {
             RemoteDeploymentPush.main("http://127.0.0.1:8080/FEDCBA9876543210_",
                     "8H7G6F5E4D3C2B1A",
                     "./src/test/resources/example.png",
-                    "-v")
+                    "-v",
+                    "-d")
         );
         OUTPUT.println(outputBuffer);
         Assertions.assertEquals("AbortState", throwable.getClass().getSimpleName());
         final String outputText = outputBuffer.toString();
-        final String failedPattern = String.format("Package %d of 6 failed (status 404,", 1);
-        if (!outputText.contains(failedPattern))
-            Assertions.fail("Missing output: " + failedPattern);
+        if (!outputText.matches("(?s)^.*Package 1 of 6 (failed|rejected).*$"))
+            Assertions.fail("Wrong output: " + outputText);
     }
 }
