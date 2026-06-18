@@ -1,9 +1,9 @@
 1.1.0 2026xxxx
 CR: Test: Omission of test reports (there are better CI/CD solutions)
 CR: Test: Integration of JaCoCo (Java Code Coverage)
+CR: Push: Switch to java.net.http.HttpClient
 CR: Push: Added program argument -d (debug mode)
     - Verbose HTTP client output
-CR: Push: Switch to java.net.http.HttpClient
 
 1.0.0 20241208
 BF: Review: Optimization/Corrections
