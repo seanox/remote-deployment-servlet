@@ -277,8 +277,6 @@ public class RemoteDeploymentPush {
                         throw (AbstractState)exception;
                     throw new AbortState(String.format("Package %d of %d rejected (%d ms)",
                             packageNumber, packageCount, System.currentTimeMillis() -timing));
-                } finally {
-                    client.close();
                 }
             }
         }
