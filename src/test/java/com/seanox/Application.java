@@ -17,6 +17,10 @@
  */
 package com.seanox;
 
+import java.util.HashMap;
+import java.util.Objects;
+
+import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,15 +30,15 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import java.util.HashMap;
-import java.util.Objects;
-
 @SpringBootApplication
 class Application extends SpringBootServletInitializer {
 
     private static ConfigurableApplicationContext applicationContext;
 
     public static void main(final String... options) {
+        
+        Assertions.assertEquals("Java 21", "Java " + Runtime.version().feature(), "Java 21 is required");
+        
         if (Objects.nonNull(Application.applicationContext))
             applicationContext.close();
         final SpringApplication springApplication = new SpringApplication(Application.class);
