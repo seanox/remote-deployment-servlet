@@ -191,10 +191,10 @@
     <release-info-locate/>
     <jakarta-api-javax/>
     <release-info-insert version="4.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
-    <cmd command="mvn clean test"/>
+    <cmd command="mvn clean verify"/>
     <jakarta-api-jakarta/>
     <release-info-insert version="6.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
-    <cmd command="mvn clean test"/>
+    <cmd command="mvn clean verify"/>
     <release-info-reset/>
   </target>
 
@@ -220,10 +220,10 @@
     <release-info-locate/>
     <jakarta-api-javax/>
     <release-info-insert version="4.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
-    <cmd command="mvn clean deploy -DskipTests"/>
+    <cmd command="mvn clean verify org.sonatype.central:central-publishing-maven-plugin:publish -DskipTests"/>
     <jakarta-api-jakarta/>
     <release-info-insert version="6.${release.major}.${release.minor}.${release.patch} ${release.date}"/>
-    <cmd command="mvn clean deploy -DskipTests"/>
+    <cmd command="mvn clean verify org.sonatype.central:central-publishing-maven-plugin:publish -DskipTests"/>
     <release-info-reset/>
   </target>
 </project>
