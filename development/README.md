@@ -13,7 +13,7 @@
 - Check and if necessary update the version and time stamp of all components
   comparison with the tag from the last release.
 - Maven: check and update of dependencies
-- __Use Java 11__
+- __Use Java 21__
 - Final test (Junit only)  
   Call `mvn clean test`
 - Final test (JUnit only + GPG)  
