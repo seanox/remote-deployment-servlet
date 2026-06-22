@@ -7,6 +7,15 @@
     <echo>                                                               </echo>
     <echo>  release    Builds the complete release                       </echo>
     <echo>             Synchronizes the version in README.md             </echo>
+    <echo>                                                               </echo>
+    <echo>  release    Builds the complete release                       </echo>
+    <echo>             Combined changes and tools                        </echo>
+    <echo>             Synchronizes the version in README.md             </echo>
+    <echo>                                                               </echo>
+    <echo>  publish    Builds the complete release                       </echo>
+    <echo>             Combined changes and tools                        </echo>
+    <echo>             Synchronizes the version in README.md             </echo>
+    <echo>             Publish to the Maven Repository                   </echo>
   </target>
 
   <property name="workspace" value="${basedir}"/>
@@ -16,7 +25,7 @@
   <property name="workspace.target" value="${workspace}/target"/>
 
   <property name="spring.boot.2.version" value="2.7.18"/>
-  <property name="spring.boot.3.version" value="3.4.0"/>
+  <property name="spring.boot.4.version" value="4.1.0"/>
   <property name="jakarta.api.javax.version" value="4.0.4"/>
   <property name="jakarta.api.jakarta.version" value="6.1.0"/>
 
@@ -135,7 +144,7 @@
           replace="\1${jakarta.version}\2" flags="g" byline="false"/>
       <replaceregexp file="${workspace}/pom.xml"
           match="(&lt;artifactId&gt;spring-boot-starter-\w+&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
-          replace="\1${spring.boot.3.version}" flags="g" byline="false">
+          replace="\1${spring.boot.4.version}" flags="g" byline="false">
       </replaceregexp>
     </sequential>
   </macrodef>
