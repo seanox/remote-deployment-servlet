@@ -122,7 +122,7 @@ and sends files, if necessary in chunks, using the Package header in the HTTP
 request and was developed specifically for RemoteDeploymentFilter.
 
 ```
-usage: java -jar seanox-remote-deployment-4.1.0.0.jar <url> <secret> <file>
+usage: java -jar seanox-remote-deployment-4.1.1.0.jar <url> <secret> <file>
   -p Proxy as URL, default port 3128
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes
@@ -131,7 +131,7 @@ usage: java -jar seanox-remote-deployment-4.1.0.0.jar <url> <secret> <file>
 ```
 
 ```
-usage: java -jar seanox-remote-deployment-6.1.0.0.jar <url> <secret> <file>
+usage: java -jar seanox-remote-deployment-6.1.1.0.jar <url> <secret> <file>
   -p Proxy as URL, default port 3128
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes
@@ -171,30 +171,31 @@ Java 11 or higher
 
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment  
-https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/4.1.0.0
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/4.1.1.0
 ```xml
 <dependency>
   <groupId>com.seanox</groupId>
   <artifactId>seanox-remote-deployment</artifactId>
-  <version>4.1.0.0</version>
+  <version>4.1.1.0</version>
 </dependency>
 ```
-https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/6.1.0.0
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/6.1.1.0
 ```xml
 <dependency>
   <groupId>com.seanox</groupId>
   <artifactId>seanox-remote-deployment</artifactId>
-  <version>6.1.0.0</version>
+  <version>6.1.1.0</version>
 </dependency>
 ```
 
 # Changes 
-## 1.0.0 20241208  
-BF: Review: Optimization/Corrections  
+## 1.1.0 20260622  
 BF: Update of dependencies  
-CR: Build: Change to jakarta.servlet-api (4.x)  
-CR: Build: Optimization for jakarta.servlet-api javax + jakarta  
-CR: Build: New approach for the version number  
+CR: Test: Omission of test reports (there are better CI/CD solutions)  
+CR: Test: Integration of JaCoCo (Java Code Coverage)  
+CR: Push: Switch to java.net.http.HttpClient  
+CR: Push: Added program argument -d (debug mode)  
+CR: Maven: Switch to org.sonatype.central  
 
 [Read more](https://raw.githubusercontent.com/seanox/remote-deployment-servlet/master/CHANGES)
 
