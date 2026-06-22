@@ -31,5 +31,5 @@
 ### Maven Repository
 - __Based on the previous step__
 - Call `ant -f ./development/build.xml publish`  
-  see also https://central.sonatype.com/artifact/com.seanox/seanox-remote-deployment 
+  see also https://central.sonatype.com/artifact/com.seanox/seanox-remote-deployment  
   see also https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment
