@@ -83,12 +83,6 @@ Example of configuration via web.xml
 > - Trigger deployment activation via: `autoDeploy`, or a controlled restart of
 >   the application server
 
-> [!IMPORTANT]  
-> The project provides releases for the Servlet API 4 and 6. The major number in
-> the release number always references the servlet API, followed by the major,
-> minor and patch number of the release. Therefore, both versions are always
-> described in the following documentation.
-
 __RemoteDeploymentServlet__ The servlet is an alternative to the filter and is
 useful when the remote deployment is to run outside the context of the
 application. This makes the remote deployment accessible and usable even if the
@@ -116,6 +110,12 @@ Example of configuration via web.xml
   ...
 </web-app>
 ```
+
+> [!IMPORTANT]  
+> The project provides releases for the Servlet API 4 and 6. The major number in
+> the release number always references the servlet API, followed by the major,
+> minor and patch number of the release. Therefore, both versions are always
+> described in the following documentation.
 
 __RemoteDeploymentPush__ is a command line tool without further dependencies
 and sends files, if necessary in chunks, using the Package header in the HTTP
