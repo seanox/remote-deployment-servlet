@@ -29,11 +29,11 @@ import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Objects;
 
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * RemoteDeploymentImpl abstracts the logic for {@link RemoteDeploymentFilter}
