@@ -176,7 +176,7 @@ Java 11 or higher
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment
 
-Version for the Servlet API based on __javax.servlet__    
+For Servlet API based on __javax.servlet__    
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/4.1.1.0
 ```xml
 <dependency>
@@ -186,7 +186,7 @@ https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/4.1.1.0
 </dependency>
 ```
 
-Version for the Servlet API based on __jakarta.servlet__  
+For Servlet API based on __jakarta.servlet__  
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/6.1.1.0
 ```xml
 <dependency>
