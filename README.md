@@ -117,9 +117,13 @@ Example of configuration via web.xml
 > minor and patch number of the release. Therefore, both versions are always
 > described in the following documentation.
 
-__RemoteDeploymentPush__ is a command line tool without further dependencies
-and sends files, if necessary in chunks, using the Package header in the HTTP
+__RemoteDeploymentPush__ is a command line tool without further dependencies and
+sends files, if necessary in chunks, using the Package header in the HTTP
 request and was developed specifically for RemoteDeploymentFilter.
+
+> [!NOTE]
+> The client functionality does not use the Servlet API, so there is no
+> difference between __jakarta.servlet__ and __javax.servlet__.  
 
 ```
 usage: java -jar seanox-remote-deployment-4.1.1.0.jar <url> <secret> <file>
@@ -170,7 +174,9 @@ specific language governing permissions and limitations under the License.
 Java 11 or higher
 
 # Downloads
-https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment  
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment
+
+Version for the Servlet API based on __javax.servlet__    
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/4.1.1.0
 ```xml
 <dependency>
@@ -179,6 +185,8 @@ https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/4.1.1.0
   <version>4.1.1.0</version>
 </dependency>
 ```
+
+Version for the Servlet API based on __jakarta.servlet__  
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/6.1.1.0
 ```xml
 <dependency>
