@@ -117,16 +117,12 @@ Example of configuration via web.xml
 > minor and patch number of the release. Therefore, both versions are always
 > described in the following documentation.
 
-__RemoteDeploymentPush__ is a command line tool without further dependencies and
-sends files, if necessary in chunks, using the Package header in the HTTP
+__RemoteDeploymentPush__ is a command line tool without further dependencies
+and sends files, if necessary in chunks, using the Package header in the HTTP
 request and was developed specifically for RemoteDeploymentFilter.
 
-> [!NOTE]
-> The client functionality does not use the Servlet API, so there is no
-> difference between __jakarta.servlet__ and __javax.servlet__.  
-
 ```
-usage: java -jar seanox-remote-deployment-1.1.0.jar <url> <secret> <file>
+usage: java -jar seanox-remote-deployment-4.1.1.0.jar <url> <secret> <file>
   -p Proxy as URL, default port 3128
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes
@@ -135,7 +131,7 @@ usage: java -jar seanox-remote-deployment-1.1.0.jar <url> <secret> <file>
 ```
 
 ```
-usage: java -jar seanox-remote-deployment-2.1.1.0.jar <url> <secret> <file>
+usage: java -jar seanox-remote-deployment-6.1.1.0.jar <url> <secret> <file>
   -p Proxy as URL, default port 3128
   -h Additional HTTP request headers as <header>:<value>
   -s Chunk size in bytes, default 4194304 bytes
@@ -175,24 +171,20 @@ Java 11 or higher
 
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment  
-
-Version for the Servlet API based on javax.servlet  
-https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/1.1.0
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/4.1.1.0
 ```xml
 <dependency>
   <groupId>com.seanox</groupId>
   <artifactId>seanox-remote-deployment</artifactId>
-  <version>1.1.0</version>
+  <version>4.1.1.0</version>
 </dependency>
 ```
-
-Version for the Servlet API based on jakarta.servlet  
-https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/2.1.0
+https://mvnrepository.com/artifact/com.seanox/seanox-remote-deployment/6.1.1.0
 ```xml
 <dependency>
   <groupId>com.seanox</groupId>
   <artifactId>seanox-remote-deployment</artifactId>
-  <version>2.1.0</version>
+  <version>6.1.1.0</version>
 </dependency>
 ```
 
