@@ -4,6 +4,9 @@
 * [Publish a release](#publish-a-release)
    * [GitHub](#github)
    * [Maven Repository](#maven-repository)
+   
+## Environment
+- Java 21   
 
 ## Publish a release
 
