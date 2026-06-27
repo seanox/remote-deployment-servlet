@@ -1,9 +1,10 @@
 # Development
 
 ## Contents Overview
-* [Publish a release](#publish-a-release)
-   * [GitHub](#github)
-   * [Maven Repository](#maven-repository)
+- [Environment](#environment)
+- [Publish a release](#publish-a-release)
+   - [GitHub](#github)
+   - [Maven Repository](#maven-repository)
    
 ## Environment
 - Java 21   
