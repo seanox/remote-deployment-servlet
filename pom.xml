@@ -150,7 +150,6 @@
         </configuration>
         <executions>
           <execution>
-            <id>default-jar</id>
             <goals>
               <goal>jar</goal>
             </goals>
