@@ -2,6 +2,9 @@
 CR: Build: Reorganization of the release process
     - 1.x javax.servlet
     - 2.x jakarta.servlet
+    The major number of project version is no longer tied to future Servlet API
+    major versions to avoid ambiguity once newer Servlet API releases become
+    available.
 
 1.1.0 20260622
 BF: Update of dependencies
