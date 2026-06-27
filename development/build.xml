@@ -5,17 +5,17 @@
     <echo>                                                               </echo>
     <echo>  changes    Synchronizes README.md with CHANGES               </echo>
     <echo>                                                               </echo>
-    <echo>  release    Builds the complete release                       </echo>
-    <echo>             Synchronizes the version in README.md             </echo>
+    <echo>  compile    Builds the jar files                              </echo>
+    <echo>                                                               </echo>
+    <echo>  test       Builds the jar files                              </echo>
+    <echo>             Runs the tests                                    </echo>
     <echo>                                                               </echo>
     <echo>  release    Builds the complete release                       </echo>
-    <echo>             Combined changes and tools                        </echo>
     <echo>             Synchronizes the version in README.md             </echo>
     <echo>                                                               </echo>
     <echo>  publish    Builds the complete release                       </echo>
-    <echo>             Combined changes and tools                        </echo>
     <echo>             Synchronizes the version in README.md             </echo>
-    <echo>             Publish to the Maven Repository                   </echo>
+    <echo>             Publishes the version to the Maven repository     </echo>
   </target>
 
   <property name="workspace" value="${basedir}"/>
