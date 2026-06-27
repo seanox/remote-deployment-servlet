@@ -6,7 +6,7 @@
   <a href="https://github.com/seanox/remote-deployment-servlet/issues"
     ><img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge"
   ></a>
-  <a href="http://seanox.de/contact"
+  <a href="https://seanox.com/contact"
     ><img src="https://img.shields.io/badge/support-active-green?style=for-the-badge"
   ></a>
 </p>
