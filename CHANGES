@@ -1,6 +1,5 @@
 1.2.0 2026xxxx
 CR: Build: Reorganization of the release process
-    The Servlet API is reflected in the major version:
     - 1.x javax.servlet
     - 2.x jakarta.servlet
 
