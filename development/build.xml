@@ -5,17 +5,17 @@
     <echo>                                                               </echo>
     <echo>  changes    Synchronizes README.md with CHANGES               </echo>
     <echo>                                                               </echo>
-    <echo>  release    Builds the complete release                       </echo>
-    <echo>             Synchronizes the version in README.md             </echo>
+    <echo>  compile    Builds the jar files                              </echo>
+    <echo>                                                               </echo>
+    <echo>  test       Builds the jar files                              </echo>
+    <echo>             Runs the tests                                    </echo>
     <echo>                                                               </echo>
     <echo>  release    Builds the complete release                       </echo>
-    <echo>             Combined changes and tools                        </echo>
     <echo>             Synchronizes the version in README.md             </echo>
     <echo>                                                               </echo>
     <echo>  publish    Builds the complete release                       </echo>
-    <echo>             Combined changes and tools                        </echo>
     <echo>             Synchronizes the version in README.md             </echo>
-    <echo>             Publish to the Maven Repository                   </echo>
+    <echo>             Publishes the version to the Maven repository     </echo>
   </target>
 
   <property name="workspace" value="${basedir}"/>
@@ -23,6 +23,7 @@
   <property name="workspace.sources.filter" value="**/*.java,**/pom.xml"/>
   <property name="workspace.development" value="${workspace}/development"/>
   <property name="workspace.target" value="${workspace}/target"/>
+  <property name="workspace.java.version" value="21"/>
 
   <macrodef name="release-info-locate">
     <sequential>
@@ -128,6 +129,15 @@
   </target>
 
   <target name="test">
+    <exec executable="java.exe" outputproperty="java.version.output" failonerror="true">
+      <arg value="-version"/>
+    </exec>
+    <condition property="java.version.ckeck">
+      <matches string="${java.version.output}" pattern="version &quot;${workspace.java.version}\..*"/>
+    </condition>    
+    <fail unless="java.version.ckeck">
+      Java ${workspace.java.version} is required 
+    </fail>    
     <release-info-locate/>
     <release-info-insert/>
     <cmd command="mvn clean verify"/>
