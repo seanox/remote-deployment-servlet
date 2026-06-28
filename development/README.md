@@ -20,7 +20,7 @@
 - __Use Java 21__
 - Final test (Junit only)  
   Call `mvn clean test`
-- Final test (JUnit only + GPG)  
+- Final test (JUnit + GPG)  
   Call `mvn clean verify`
 - __Provided all tests are successful!__
 - Finalize version in the classes
